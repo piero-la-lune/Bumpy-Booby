@@ -1,0 +1,46 @@
+.lt9 {
+	header, footer, aside.main-right, .box, .box-uploads, .box-settings, .box-details,
+	.pager span, .pager a {
+		border-style: solid;
+		border-color: @borderGray;
+	}
+	header {
+		border-width: 0 0 1px 0;
+	}
+	footer {
+		border-width: 1px 0 1px 0;
+	}
+	aside.main-right {
+		border-width: 0 1px 0 1px;
+	}
+	.box, .box-uploads, .box-settings, .box-details, .pager span, .pager a {
+		border-width: 1px;
+	}
+	.box-uploads:after, .box-details:before, .box-details:after, .box-identicon:after {
+		display: none; /* No arrow or background */
+	}
+}
+
+.lt8 {
+	.nav-bar, .nav-bar ul, .nav-bar ul li { display: inline; }
+	/* because it is overwrited just above */
+	@media screen and (max-width: 880px) { .nav-bar { display: none; } }
+	.div-preview-projects, .div-table { display: block; }
+	.div-preview-project, .div-statuses, .div-last-edits, .div-last-activities, .div-all-uploads {
+		display: block;
+		width: auto;
+		max-width: none;
+		margin-left: auto;
+		margin-right: auto;
+	}
+	.div-last-edits, .div-all-uploads {
+		margin-top: 36px;
+	}
+	.div-preview-issue {
+		display: block;
+		span, a, div { display: inline; }
+	}
+	.box-issue form { margin: 0; padding: 0; } /* Why ? */
+	.form-search .btn-small, .form-log-in .btn-small { margin: 0; padding: 0;}
+	aside.main-right input.input-left { width: @mainRightWidth - 24px - 27px - 4px; }
+}

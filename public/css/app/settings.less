@@ -1,0 +1,38 @@
+.box-settings {
+	.boxing();
+	.top {
+		cursor: pointer;
+		color: @linkGray;
+		margin-bottom: 0;
+	}
+	.box-in {
+		margin-top: 8px;
+		overflow: hidden; /* prevent jump when sliding */
+	}
+	.box-closed {
+		display: none;
+	}
+	.table {
+		width: auto;
+		margin: 0 auto;
+		input {
+			margin-top: 2px;
+			margin-bottom: 2px;
+		}
+	}
+	label:first-child { margin-top: 0; }
+	p.buttons {
+		margin: 8px 0 0 0;
+		text-align: center;
+		.btn { margin: 2px; }
+	}
+}
+
+.identicon {
+	float: left;
+	.shadow-gray();
+	background: #fff;
+	margin-right: 12px;
+	.border-radius(6px);
+	vertical-align: middle;
+}

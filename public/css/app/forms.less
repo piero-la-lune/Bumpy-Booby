@@ -1,0 +1,349 @@
+label, input, button, select, textarea {
+	font-weight: normal;
+	font-size: @fontSize;
+	font-family: @fontFamily;
+}
+input, textarea, select {
+	border: 1px solid darken(@buttonGray, 10%);
+	.border-radius(2px);
+	padding: 4px;
+	&:focus {
+		border-color: darken(@buttonGray, 20%);
+	}
+}
+input, textarea { -webkit-appearance: none; }
+
+input[readonly] {
+	font-style: italic;
+	background: @buttonGray;
+	&:focus { border-color: darken(@buttonGray, 10%); }
+}
+
+textarea {
+	.box-sizing(border-box);
+	width: 100%;
+}
+
+label {
+	display: block;
+	margin: 12px 0 2px 8px;
+	font-style: italic;
+}
+
+legend {
+	font-size: 1.4em;
+	border-bottom: 1px solid @borderGray;
+	margin: 42px 0 12px 0;
+	.box-sizing(border-box);
+	width: 100%;
+}
+
+.form {
+	p.title {
+		font-weight: bold;
+		margin: 0;
+		padding: 0;
+		small {
+			font-weight: normal;
+			color: @textGray;
+		}
+	}
+	p.help {
+		margin: 0 0 0 20px;
+		padding: 4px 0 4px 6px;
+		border-left: 1px solid @borderGray;
+		color: @textGray;
+		font-size: 0.9em;
+	}
+}
+.form-user {
+	margin: 32px 8px 64px 8px;
+}
+.form-sort-filter {
+	margin-top: 8px;
+	p:first-child {
+		margin: 0;
+	}
+	.btn-open, .btn-closed {
+		.opacity(50);
+		&:hover { .opacity(80); }
+		&.selected { .opacity(100); }
+		cursor: pointer;
+	}
+	.a-pick-status {
+		display: inline-block;
+		margin: 2px;
+		padding: 2px 6px;
+		border-width: 4px 0 4px 0;
+		border-style: solid;
+		border-color: transparent;
+		&:hover {
+			text-decoration: none;
+		}
+	}
+}
+
+.box-new-issue form, .box-issue form {
+	input, textarea {
+		width: 100%;
+		margin-bottom: 8px;
+		.box-sizing(border-box);
+	}
+}
+.form-change-notif {
+	text-align: center;
+	border-top: 1px solid @borderGray;
+	padding-top: 10px;
+	.btn {
+		font-size: 0.8em;
+	}
+}
+.form-search {
+	.separator();
+}
+.form-log-in {
+	text-align: center;
+	.separator();
+	input {
+		.box-sizing(border-box);
+		width: 100%;
+		margin-bottom: 2px;
+	}
+	.btn-right { margin-bottom: 2px; }
+	a.btn { margin-bottom: 4px; }
+}
+.form-log-out {
+	text-align: center;
+	.separator();
+	.text-gray-darken();
+	a {
+		color: @linkGray;
+		font-weight: bold;
+		font-style: italic;
+	}
+	p {
+		margin: 0 0 6px 0;
+		padding: 0;
+	}
+}
+
+.form-actions {
+	padding: 8px 20px;
+	margin: 8px 0;
+	background-color: @backgroundGray;
+	border-top: 1px solid @borderGray;
+	text-align: center;
+	button, input, a {
+		margin: 2px;
+	}
+}
+
+.btn {
+	display: inline-block;
+	font-size: 0.9em;
+	line-height: 20px;
+	font-weight: bold;
+	text-align: center;
+	vertical-align: middle;
+	cursor: pointer;
+	.border-radius(2px);
+	white-space: nowrap;
+	padding: 4px 14px;
+	margin : 0;
+	&:hover { text-decoration: none; }
+	&.active {
+		.box-shadow(inset 0px 1px 4px rgba(0,0,0,0.3));
+	}
+
+	.btn(@buttonGray);
+	color: @linkGray;
+	&:hover { color: @linkGray; }
+}
+.btn-primary {
+	.btn(@formBlue);
+}
+.btn-danger {
+	.btn(@formRed);
+}
+.btn-success {
+	.btn(@formGreen);
+}
+.btn-group-up-down {
+	width: 44px; /* 1 + 14 + 14 + 14 + 1 */
+	display: inline-block;
+	vertical-align: middle;
+	.btn {
+		padding: 0 14px;
+	}
+	.a-up {
+		.border-radius(2px 2px 0 0);
+	}
+	.a-down {
+		.border-radius(0 0 2px 2px);
+	}
+}
+.btn.a-remove, .btn.a-remove-project {
+	margin-top: 4px;
+}
+.btn-upload {
+	position: relative;
+	overflow: hidden;
+}
+.btn-upload input {
+	position: absolute;
+	top: -2px; /* because of the border on .btn */
+	right: -2px; /* because of the border on .btn */
+	margin: 0;
+	border: solid transparent;
+	border-width: 0 0 100px 200px;
+	.opacity(0);
+	cursor: pointer;
+	-moz-transform: translate(-300px, 0) scale(4);
+	direction: ltr;
+}
+.btn-color {
+	padding: 4px;
+}
+.btn-small {
+	padding: 2px 6px;
+}
+.btn-tag, .btn-tag-small {
+	display: inline-block; /* IE8 bug ? */
+	vertical-align: middle;
+	padding: 2px 4px;
+	.border-radius(3px);
+	.box-shadow(1px 1px 2px @textGray);
+	color: #fff;
+	font-size: 14px;
+	font-weight: bold;
+	text-transform: uppercase;
+	&:hover { text-decoration: none; }
+}
+.btn-tag-small {
+	color: #fff;
+	font-style: normal;
+	font-size: 0.7em;
+	padding: 0 2px;
+	cursor: default;
+}
+.btn-open {
+	background: lighten(#A9EA82, 5%);
+	border: 3px solid darken(#A9EA82, 10%);
+}
+.btn-closed {
+	background: lighten(#FF6454, 10%);
+	border: 3px solid #FF6454;
+}
+.btn-commented {
+	background: lighten(#86D2B9, 10%);
+	border: 3px solid darken(#86D2B9, 0%);
+}
+.btn-status {
+	border-width: 3px;
+	border-style: solid;
+	.text-gray();
+	a:hover { text-decoration: none; }
+}
+
+.input-small {
+	width: 80px;
+}
+.input-normal {
+	width: 120px;
+}
+.input-medium {
+	width: 160px;
+}
+.input-large {
+	width: 260px;
+}
+
+.input-left {
+	margin: 0;
+	.border-radius(2px 0 0 2px);
+	vertical-align: middle;
+}
+.btn-right {
+	margin: 0;
+	border-left: none;
+	.border-radius(0 2px 2px 0);
+	vertical-align: middle;
+}
+
+.i-display, .text-loading {
+	display: none;
+}
+
+
+
+.div-pick-color {
+	display: none;
+	margin-top: 8px;
+	.square {
+		display: inline-block;
+	}
+}
+
+.square {
+	display: block;
+	width: 16px;
+	height: 16px;
+}
+
+
+
+
+
+
+
+.alert {
+	padding: 8px 35px 8px 14px;
+	margin-bottom: 12px;
+	text-shadow: 0 1px 0 rgba(255,255,255,.5);
+	.border-radius(4px);
+	.close {
+		position: relative;
+		top: -2px;
+		right: -21px;
+	}
+}
+.alert-success {
+	background-color: lighten(@formGreen, 45%);
+	border: 1px solid lighten(@formGreen, 40%);
+	color: darken(@formGreen, 10%);
+}
+.alert-error {
+	background-color: lighten(@formRed, 40%);
+	border: 1px solid lighten(@formRed, 35%);
+	color: darken(@formRed, 10%);
+}
+.alert-info {
+	background-color: lighten(@formBlue, 30%);
+	border: 1px solid lighten(@formBlue, 25%);
+	color: darken(@formBlue, 10%);
+}
+.close {
+	float: right;
+	font-size: 20px;
+	font-weight: bold;
+	line-height: 20px;
+	color: #000;
+	text-shadow: 0 1px 0 rgba(255,255,255,1);
+	.opacity(20);
+	&:hover {
+		color: #000;
+		text-decoration: none;
+		cursor: pointer;
+		.opacity(40);
+	}
+}
+// Additional properties for button version
+// iOS requires the button element instead of an anchor tag.
+// If you want the anchor version, it requires `href="#"`.
+button.close {
+	padding: 0;
+	cursor: pointer;
+	background: transparent;
+	border: 0;
+	-webkit-appearance: none;
+}
