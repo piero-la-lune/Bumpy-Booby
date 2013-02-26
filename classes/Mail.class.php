@@ -13,8 +13,12 @@ class Mail {
 		$this->content = $content;
 		$this->replace(array('%title%' => $config['title']));
 		if (getProject()) {
-			if (onlyDefaultProject()) { $this->replace(array('%project%' => '')); }
-			else { $this->replace(array('%project%' => getProject())); }
+			if (onlyDefaultProject()) {
+				$this->replace(array('%project%' => ''));
+			}
+			else {
+				$this->replace(array('%project%' => getProject()));
+			}
 		}
 	}
 
@@ -53,6 +57,7 @@ class Mail {
 
 		return mail($to, $object, $this->personal_content, $headers);
 	}
+
 }
 
 ?>

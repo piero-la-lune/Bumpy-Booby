@@ -34,6 +34,7 @@ class Settings {
 		$this->c_global($post);
 		$this->c_projects($post);
 		$this->c_uploads($post);
+		$this->c_display($post);
 		$this->c_colors($post);
 		$this->c_statuses($post);
 		$this->c_labels($post);
@@ -67,13 +68,19 @@ class Settings {
 				$this->config['url_rewriting'] = false;
 			}
 			else {
-				$this->config['url_rewriting'] = filter_var($post['url_rewriting'], FILTER_SANITIZE_URL);
+				$this->config['url_rewriting'] = filter_var(
+					$post['url_rewriting'],
+					FILTER_SANITIZE_URL
+				);
 				if ($rewriting = Url::getRules()) {
 					$base = $this->config['url_rewriting'];
-					$text = 'ErrorDocument 404 '.$base.'error/404'."\n\n";
-					$text .= 'RewriteEngine on'."\n".'RewriteBase '.$base."\n\n";
+					$text = 'ErrorDocument 404 '.$base.'error/404'."\n\n"
+						.'RewriteEngine on'."\n"
+						.'RewriteBase '.$base."\n\n";
 					foreach ($rewriting as $r) {
-						if (isset($r['condition']) && $r['condition'] == 'file_doesnt_exist') {
+						if (isset($r['condition'])
+							&& $r['condition'] == 'file_doesnt_exist'
+						) {
 							$text .= "\n".'RewriteCond %{REQUEST_FILENAME} !-f'."\n";
 						}
 						$text .= 'RewriteRule '.$r['rule'].' '.$r['redirect'].' [QSA,L]'."\n";
@@ -95,10 +102,18 @@ class Settings {
 		}
 		if (isset($post['language'])
 			&& $post['language'] != $this->config['language']
-			&& Text::check_language($post['language']))
-		{
+			&& Text::check_language($post['language'])
+		) {
 			$this->config['language'] = $post['language'];
 			$this->errors[] = 'language_modified';
+		}
+		if (isset($post['logs_enabled'])) {
+			if ($post['logs_enabled'] == 'true') {
+				$this->config['logs_enabled'] = true;
+			}
+			else {
+				$this->config['logs_enabled'] = false;
+			}
 		}
 		return true;
 	}
@@ -112,25 +127,28 @@ class Settings {
 			|| !isset($post['project_description'])
 			|| !is_array($post['project_description'])
 			|| count($post['project_id']) != count($post['project_old_id'])
-			|| count($post['project_id']) != count($post['project_description']))
-			{ return false; }
+			|| count($post['project_id']) != count($post['project_description'])
+		) { return false; }
 		foreach ($this->config['projects'] as $k => $v) {
 			if (!in_array($k, $post['project_old_id'])) {
-				unlink(DIR_DATABASE.str_replace('%name%', $k, FOLDER_PROJECT).FILE_ISSUES);
-				rmdir(DIR_DATABASE.str_replace('%name%', $k, FOLDER_PROJECT));
+				$folder = str_replace('%name%', $k, FOLDER_PROJECT);
+				unlink(DIR_DATABASE.$folder.FILE_ISSUES);
+				rmdir(DIR_DATABASE.$folder);
 			}
 		}
 		$projects = array();
 		$to_be_renamed = array();
 		foreach ($post['project_id'] as $k => $v) {
 			$id = Text::purge($v, false);
-			$old_id = Text::purge($post['project_old_id'][$k], false); # Can be empty
+			# $old_id can be empty
+			$old_id = Text::purge($post['project_old_id'][$k], false);
 			if (empty($id)) {
 				$id = Text::randomKey(8);
 			}
 			if (isset($projects[$id])) {
 				$this->errors[] = 'validate_same_project_name';
-				$id = Text::randomKey(8); # We don't want to overwrite the issues file
+				# We don't want to overwrite the issues file
+				$id = Text::randomKey(8);
 			}
 			$permissions = array();
 			$groups = $this->config['groups']; $groups['none'] = '';
@@ -151,19 +169,23 @@ class Settings {
 		while (!empty($to_be_renamed)) {
 			$loop = array();
 			foreach ($to_be_renamed as $k => $v) {
-				$dir_old = DIR_DATABASE.str_replace('%name%', $k, FOLDER_PROJECT);
-				$dir_new = DIR_DATABASE.str_replace('%name%', $v, FOLDER_PROJECT);
-				if (!is_dir($dir_old)) { continue; } # Should not happen
-				if (is_dir($dir_new)) {
-					# We don't want to overwrite the issues file
-					# But we want to rename the folder, in case another project need it
+				$folder_old = str_replace('%name%', $k, FOLDER_PROJECT);
+				$folder_new = str_replace('%name%', $v, FOLDER_PROJECT);
+				if (!is_dir(DIR_DATABASE.$folder_old)) {
+					# Should not happen
+					continue;
+				}
+				if (is_dir(DIR_DATABASE.$folder_new)) {
+					# We don't want to overwrite the issues file, but we want
+					# to rename the folder, in case another project need it
 					$new = Text::randomKey(8);
-					rename($dir_old, DIR_DATABASE.str_replace('%name%', $new, FOLDER_PROJECT));
+					$folder = str_replace('%name%', $new, FOLDER_PROJECT);
+					rename($folder_old, DIR_DATABASE.$folder);
 					$loop[$new] = $v; # Try next time
 				}
 				else {
 					# We can rename the folder without overwriting a project
-					rename($dir_old, $dir_new);
+					rename($folder_old, $folder_new);
 				}
 			}
 			$to_be_renamed = $loop;
@@ -189,11 +211,44 @@ class Settings {
 		return true;
 	}
 
+	protected function c_display($post) {
+		if (!canAccess('settings')) { return false; }
+		if (isset($post['issues_per_page'])) {
+			$this->config['issues_per_page'] =
+				intval($post['issues_per_page']);
+		}
+		if (isset($post['search_per_page'])) {
+			$this->config['search_per_page'] =
+				intval($post['search_per_page']);
+		}
+		if (isset($post['length_preview_text'])) {
+			$this->config['length_preview_text'] =
+				intval($post['length_preview_text']);
+		}
+		if (isset($post['length_search_text'])) {
+			$this->config['length_search_text'] =
+				intval($post['length_search_text']);
+		}
+		if (isset($post['length_preview_project'])) {
+			$this->config['length_preview_project'] =
+				intval($post['length_preview_project']);
+		}
+		if (isset($post['nb_last_activity_dashboard'])) {
+			$this->config['nb_last_activity_dashboard'] =
+				intval($post['nb_last_activity_dashboard']);
+		}
+		if (isset($post['nb_last_activity_user'])) {
+			$this->config['nb_last_activity_user'] =
+				intval($post['nb_last_activity_user']);
+		}
+		return true;
+	}
+
 	protected function c_colors($post) {
 		if (!canAccess('settings')
 			|| !isset($post['color_hex'])
-			|| !is_array($post['color_hex']))
-			{ return false; }
+			|| !is_array($post['color_hex'])
+		) { return false; }
 		$colors = array();
 		foreach ($post['color_hex'] as $v) {
 			$colors[] = Text::checkColor($v);
@@ -219,13 +274,15 @@ class Settings {
 			|| !is_array($post['status_dashboard'])
 			|| count($post['status_id']) != count($post['status_name'])
 			|| count($post['status_id']) != count($post['status_color'])
-			|| count($post['status_id']) != count($post['status_dashboard']))
-			{ return false; }
+			|| count($post['status_id']) != count($post['status_dashboard'])
+		) { return false; }
 		$statuses = array();
 		foreach ($post['status_id'] as $k => $v) {
 			$id = Text::purge($v);
 			if (empty($id)) { continue; }
-			$dashboard = ($post['status_dashboard'][$k] == 'true') ? true : false;
+			$dashboard = ($post['status_dashboard'][$k] == 'true') ?
+				true:
+				false;
 			$statuses[$id] = array(
 				'name' => htmlspecialchars($post['status_name'][$k]),
 				'color' => Text::checkColor($post['status_color'][$k]),
@@ -233,7 +290,8 @@ class Settings {
 			);
 		}
 		if (!isset($statuses[DEFAULT_STATUS])) {
-			$statuses[DEFAULT_STATUS] = $this->config['statuses'][DEFAULT_STATUS];
+			$statuses[DEFAULT_STATUS] =
+				$this->config['statuses'][DEFAULT_STATUS];
 			$this->errors[] = 'default_status_removed';
 		}
 		foreach ($this->config['projects'] as $k => $v) {
@@ -253,8 +311,8 @@ class Settings {
 			|| !isset($post['label_color'])
 			|| !is_array($post['label_color'])
 			|| count($post['label_id']) != count($post['label_name'])
-			|| count($post['label_id']) != count($post['label_color']))
-			{ return false; }
+			|| count($post['label_id']) != count($post['label_color'])
+		) { return false; }
 		$labels = array();
 		foreach ($post['label_id'] as $k => $v) {
 			$id = Text::purge($v);
@@ -282,8 +340,8 @@ class Settings {
 			|| !is_array($post['group_id'])
 			|| !isset($post['group_name'])
 			|| !is_array($post['group_name'])
-			|| count($post['group_id']) != count($post['group_name']))
-			{ return false; }
+			|| count($post['group_id']) != count($post['group_name'])
+		) { return false; }
 		$groups = array();
 		foreach ($post['group_id'] as $k => $v) {
 			$id = Text::purge($v);
@@ -295,7 +353,8 @@ class Settings {
 			$this->errors[] = 'default_group_removed';
 		}
 		if (!isset($groups[DEFAULT_GROUP_SUPERUSER])) {
-			$groups[DEFAULT_GROUP_SUPERUSER] = $this->config['groups'][DEFAULT_GROUP_SUPERUSER];
+			$groups[DEFAULT_GROUP_SUPERUSER] =
+				$this->config['groups'][DEFAULT_GROUP_SUPERUSER];
 			$this->errors[] = 'default_group_superuser_removed';
 		}
 		foreach ($this->config['users'] as $k => $u) {
@@ -342,8 +401,8 @@ class Settings {
 			|| count($post['user_id']) != count($post['user_password'])
 			|| count($post['user_id']) != count($post['user_email'])
 			|| count($post['user_id']) != count($post['user_notifications'])
-			|| count($post['user_id']) != count($post['user_group']))
-			{ return false; }
+			|| count($post['user_id']) != count($post['user_group'])
+		) { return false; }
 		$users = array();
 		$newKey = Text::newKey($this->config['users']);
 		foreach ($post['user_id'] as $k => $v) {
@@ -361,7 +420,9 @@ class Settings {
 				}
 			}
 			$username = $post['user_username'][$k];
-			if (empty($post['user_password'][$k]) && isset($this->config['users'][$id])) {
+			if (empty($post['user_password'][$k])
+				&& isset($this->config['users'][$id])
+			) {
 				$hash = $this->config['users'][$id]['hash'];
 			}
 			else {
@@ -410,8 +471,8 @@ class Settings {
 			|| !isset($post['password'])
 			|| !isset($post['email'])
 			|| !isset($post['notifications'])
-			|| !isset($post['token']))
-			{
+			|| !isset($post['token'])
+		) {
 			return Trad::A_ERROR_FORM;
 		}
 		if (!tokenOk($post['token'])) {
@@ -422,7 +483,10 @@ class Settings {
 			$hash = $this->config['users'][$id]['hash'];
 		}
 		else {
-			$hash = Text::getHash($post['password'], $this->config['users'][$id]['username']);
+			$hash = Text::getHash(
+				$post['password'],
+				$this->config['users'][$id]['username']
+			);
 		}
 		if (filter_var($post['email'], FILTER_VALIDATE_EMAIL)) {
 			$email = $post['email'];
@@ -452,8 +516,8 @@ class Settings {
 			|| !isset($post['username'])
 			|| !isset($post['password'])
 			|| !isset($post['email'])
-			|| !isset($post['token']))
-			{
+			|| !isset($post['token'])
+		) {
 			return Trad::A_ERROR_FORM;
 		}
 		if (!tokenOk($post['token'])) {
@@ -497,10 +561,18 @@ class Settings {
 		if (!isset($this->config['users'][$id])) { return false; }
 		$user = &$this->config['users'][$id];
 		$user['login_failed']++;
-		if ($user['login_failed'] < 10) { $user['wait_until'] = time(); }
-		elseif ($user['login_failed'] < 20) { $user['wait_until'] = time()+600; }
-		elseif ($user['login_failed'] < 30) { $user['wait_until'] = time()+1800; }
-		else { $user['wait_until'] = time()+3600; }
+		if ($user['login_failed'] < 10) {
+			$user['wait_until'] = time();
+		}
+		elseif ($user['login_failed'] < 20) {
+			$user['wait_until'] = time()+600; # 10 minutes
+		}
+		elseif ($user['login_failed'] < 30) {
+			$user['wait_until'] = time()+1800; # half hour
+		}
+		else {
+			$user['wait_until'] = time()+3600; # one hour
+		}
 		$this->save_users();
 		unset($user);
 	}
@@ -525,11 +597,11 @@ class Settings {
 			'issues_per_page' => 12,
 			'search_per_page' => 12,
 			'length_search_text' => 120,
-			'lenght_preview_text' => 100,
-			'lenght_preview_project' => 200,
+			'length_preview_text' => 100,
+			'length_preview_project' => 200,
 			'nb_last_activity_dashboard' => 5,
 			'nb_last_activity_user' => 5,
-			'logs_enabled' => true,
+			'logs_enabled' => false,
 			'projects' => array(
 				'default' => array(
 					'description' => '',

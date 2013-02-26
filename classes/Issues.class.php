@@ -13,9 +13,11 @@ class Issues {
 		$this->project = $project;
 		$folder = str_replace('%name%', $this->project, FOLDER_PROJECT);
 		if (!is_file(DIR_DATABASE.$folder.FILE_ISSUES)) {
+			if (!isset($config['projects'][$project])) {
 				# Should not happen
 				# But we don't want to create an useless new file anyway
-			if (!isset($config['projects'][$project])) { return true; }
+				return true;
+			}
 			$ids_users = array_keys($config['users']);
 			$this->issues = array(
 				1 => array(
@@ -50,7 +52,20 @@ class Issues {
 	}
 
 	protected function save() {
-		update_file(str_replace('%name%', $this->project, FOLDER_PROJECT).FILE_ISSUES, Text::hash($this->issues));
+		update_file(str_replace(
+			'%name%',
+			$this->project,
+			FOLDER_PROJECT
+		).FILE_ISSUES, Text::hash($this->issues));
+	}
+
+	public function exists($id) {
+		return (
+			   isset($this->issues[$id])
+			&& !empty($this->issues[$id])
+			&& (canAccess('private_issues')
+				|| !in_array(PRIVATE_LABEL, $this->issues[$id]['labels']))
+		);
 	}
 
 	public function html_list($a) {
@@ -61,9 +76,14 @@ class Issues {
 			foreach ($issue['labels'] as $la) {
 				$lab = $config['labels'][$la];
 				$url = Url::parse($this->project.'/labels/'.$la);
-				$labels .= '&nbsp;<a href="'.$url.'" class="label" style="background-color:'.$lab['color'].'">'.$lab['name'].'</a>';
+				$labels .= '<a href="'.$url.'" class="label" '
+					.'style="background-color:'.$lab['color'].'">'
+					.$lab['name']
+				.'</a>';
 			}
-			if (!empty($labels)) { $labels = '<div class="labels">'.$labels.'</div>'; }
+			if (!empty($labels)) {
+				$labels = '<div class="labels">'.$labels.'</div>';
+			}
 			$nbcomments = 0;
 			foreach ($issue['edits'] as $e) {
 				if (!empty($e) && $e['type'] == 'comment') { $nbcomments++; }
@@ -74,30 +94,95 @@ class Issues {
 				Text::username($issue['openedby'], true),
 				Text::ago($issue['date'])
 			), Trad::S_ISSUE_CREATED);
-			$html .= '
-<div class="div-preview-issue"><div class="div-table">
-	<div class="div-left"><a class="a-issue" href="'.$url.'"><span>#</span>'.$id.'</a></div>
-	<div class="div-right" style="border-color:'.$config['statuses'][$issue['status']]['color'].'">
-		<a class="summary" href="'.$url.'">'.htmlspecialchars($issue['summary']).'</a>
-		<span class="gray">'.$by.'&nbsp;–&nbsp;<a href="'.$url.'#comments" class="a-nb-comment"><i class="icon-comment"></i>'.$nbcomments.'</a></span>
-		'.$labels.'
-	</div>
-</div></div>
-			';
+			$color = $config['statuses'][$issue['status']]['color'];
+			$html .= '<div class="div-preview-issue">'
+				.'<div class="table">'
+					.'<div class="cell-left">'
+						.'<a class="a-id-issue" href="'.$url.'" '
+							.'style="background:'.$color.'">'
+							.'<span>#</span>'.$id
+						.'</a>'
+					.'</div>'
+					.'<div class="cell-right">'
+						.'<a class="a-summary" href="'.$url.'">'
+							.htmlspecialchars($issue['summary'])
+						.'</a>'
+						.'<span class="grey">'
+							.$by.'&nbsp;–&nbsp;'
+							.'<a href="'.$url.'#comments" class="a-nb-comment">'
+								.'<i class="icon-comment"></i>'.$nbcomments
+							.'</a>'
+						.'</span>'
+						.$labels
+					.'</div>'
+				.'</div>'
+			.'</div>';
 		}
 		$html = Text::remove_blanks($html);
 		return $html;
 	}
+	public static function get_preview_edit($e) {
+		global $config;
+		$ret = '<div class="box box-update" id="e-'.$e['id'].'">'
+			.'<div class="top">';
+		if ($e['type'] == 'status') {
+			$color = $config['statuses'][$e['changedto']]['color'];
+			$ret .= str_replace(
+				array('%user%', '%time%', '%status%'),
+				array(
+					Text::username($e['by'], true),
+					Text::ago($e['date']),
+					'<span class="btn-status" style="background:'.$color.'">'
+						.Text::status($e['changedto'], $e['assignedto'])
+					.'</span>'
+				),
+				Trad::S_ISSUE_STATUS_UPDATED);
+		}
+		if ($e['type'] == 'comment') {
+			$ret .= str_replace(
+				array('%adj%', '%user%', '%time%'),
+				array(
+					'<span class="btn-commented">'.Trad::W_COMMENTED.'</span>',
+					Text::username($e['by'], true),
+					Text::ago($e['date'])
+				),
+				Trad::S_ISSUE_UPDATED);
+		}
+		elseif ($e['type'] == 'open' && $e['changedto']) {
+			$ret .= str_replace(
+				array('%adj%', '%user%', '%time%'),
+				array(
+					'<span class="btn-open">'.Trad::W_REOPENED.'</span>',
+					Text::username($e['by'], true),
+					Text::ago($e['date'])
+				),
+				Trad::S_ISSUE_UPDATED);
+		}
+		elseif ($e['type'] == 'open') {
+			$ret .= str_replace(
+				array('%adj%', '%user%', '%time%'),
+				array(
+					'<span class="btn-closed">'.Trad::W_CLOSED.'</span>',
+					Text::username($e['by'], true),
+					Text::ago($e['date'])
+				),
+				Trad::S_ISSUE_UPDATED);
+		}
+		elseif ($e['type'] == 'newissue') { # not really an edit
+			$ret .= str_replace(
+				array('%adj%', '%user%', '%time%'),
+				array(
+					'<span class="btn-open">'.Trad::W_OPENED.'</span>',
+					Text::username($e['by'], true),
+					Text::ago($e['date'])
+				),
+				Trad::S_ISSUE_UPDATED);
+		}
+		return $ret.'</div></div>';
+	}
 
 	public function get($id = NULL) {
-		if (!canAccess('issues')) { return false; }
-		if (!isset($this->issues[$id])
-			|| empty($this->issues[$id])
-			|| (in_array(PRIVATE_LABEL, $this->issues[$id]['labels'])
-				&& !canAccess('private_issues')))
-		{
-			return false;
-		}
+		if (!canAccess('issues') || !$this->exists($id)) { return false; }
 		return $this->issues[$id];
 	}
 
@@ -107,10 +192,8 @@ class Issues {
 		foreach ($this->issues as $k => $v) {
 			if (!empty($v)
 				&& (!in_array(PRIVATE_LABEL, $v['labels'])
-					|| canAccess('private_issues')))
-			{
-				$ret[$k] = $v;
-			}
+					|| canAccess('private_issues'))
+			) { $ret[$k] = $v; }
 		}
 		return $ret;
 	}
@@ -118,18 +201,26 @@ class Issues {
 	public function new_issue($post) {
 		global $config;
 		if (!canAccess('new_issue')
-			|| !isset($post['summary'])
-			|| !isset($post['text'])
+			|| !isset($post['issue_summary'])
+			|| !isset($post['issue_text'])
 			|| !isset($post['uploads'])
-			|| !isset($post['token']))
-			{ return Trad::A_ERROR_FORM; }
+			|| !isset($post['token'])
+		) { return Trad::A_ERROR_FORM; }
+		if (canAccess('update_issue')
+			&& (!isset($post['issue_status'])
+				|| !isset($post['issue_assignedto'])
+				|| !isset($post['issue_dependencies'])
+				|| !isset($post['issue_labels'])
+				|| !array_key_exists($post['issue_status'], $config['statuses'])
+			)
+		) { return Trad::A_ERROR_FORM; }
 		if (!tokenOk($post['token'])) {
 			return Trad::A_ERROR_TOKEN;
 		}
 
 		if ($config['loggedin']
-			&& isset($config['users'][$_SESSION['id']]))
-		{
+			&& isset($config['users'][$_SESSION['id']])
+		) {
 			$by = intval($_SESSION['id']);
 		}
 		else { $by = NULL; }
@@ -145,20 +236,46 @@ class Issues {
 			}
 		}
 
+		$status = DEFAULT_STATUS;
+		$assignedto = NULL;
+		$dependencies = array();
+		$labels = array();
+		if (canAccess('update_issue')) {
+			$status = $post['issue_status'];
+			if (array_key_exists($post['issue_assignedto'], $config['users'])) {
+				$assignedto = $post['issue_assignedto'];
+			}
+			$dp = explode(',', $post['issue_dependencies']);
+			foreach ($dp as $d) {
+				$d = str_replace(array('#', ' '), '', $d);
+				if ($this->exists($d)) {
+					$dependencies[] = $d;
+				}
+			}
+			$la = explode(',', $post['issue_labels']);
+			foreach ($la as $l) {
+				if (isset($config['labels'][$l])
+					&& (canAccess('private_issues') || $l != PRIVATE_LABEL)
+				) {
+					$labels[] = $l;
+				}
+			}
+		}
+
 		$id = Text::newKey($this->issues);
 
 		$this->issues[$id] = array(
 			'id' => $id,
-			'summary' => $post['summary'],
-			'text' => $post['text'],
+			'summary' => $post['issue_summary'],
+			'text' => $post['issue_text'],
 			'date' => time(),
 			'edit' => time(),
 			'open' => true,
 			'openedby' => $by,
-			'assignedto' => NULL,
-			'status' => DEFAULT_STATUS,
-			'labels' => array(),
-			'dependencies' => array(),
+			'assignedto' => $assignedto,
+			'status' => $status,
+			'labels' => $labels,
+			'dependencies' => $dependencies,
 			'uploads' => $uploads,
 			'mailto' => array(),
 			'edits' => array()
@@ -166,14 +283,14 @@ class Issues {
 		$this->lastissue = $id;
 
 		if ($by !== NULL
-			&& $config['users'][$by]['notifications'] != 'never')
-		{
+			&& $config['users'][$by]['notifications'] != 'never'
+		) {
 			$this->update_mailto($id, array($by => true));
 		}
 		$mail = new Mail(Trad::M_NEW_ISSUE_O, Trad::M_NEW_ISSUE);
 		$mail->replace(array(
 			'%id%' => $id,
-			'%summary%' => $post['summary'],
+			'%summary%' => $post['issue_summary'],
 			'%by%' => Text::username($by),
 			'%url%' => Url::parse($this->project.'/issues/'.$id)
 		));
@@ -181,7 +298,9 @@ class Issues {
 			if ($u['notifications'] == 'never') { continue; }
 			if ($u['notifications'] == 'me') { continue; }
 			if ($u['id'] == $by) { continue; }
-			$mail->replace_personal(array('%username%' => Text::username($u['id'])));
+			$mail->replace_personal(array(
+				'%username%' => Text::username($u['id'])
+			));
 			$mail->send($u['email']);
 		}
 
@@ -195,8 +314,8 @@ class Issues {
 			|| !isset($edits['text'])
 			|| !isset($edits['summary'])
 			|| !isset($edits['token'])
-			|| !isset($this->issues[$id]))
-			{ return Trad::A_ERROR_FORM; }
+			|| !$this->exists($id)
+		) { return Trad::A_ERROR_FORM; }
 		if (!tokenOk($edits['token'])) {
 			return Trad::A_ERROR_TOKEN;
 		}
@@ -212,13 +331,13 @@ class Issues {
 		global $config;
 		if (!canAccess('edit_issue')
 			|| !isset($edits['token'])
-			|| !isset($this->issues[$id]))
-			{ return Trad::A_ERROR_FORM; }
+			|| !$this->exists($id)
+		) { return Trad::A_ERROR_FORM; }
 		if (!tokenOk($edits['token'])) {
 			return Trad::A_ERROR_TOKEN;
 		}
 
-		// We don't destroy it because we don't want to give its ID to a new comment
+		# We don't destroy it because we don't want to give its ID to a new comment
 		$this->issues[$id] = array();
 
 		$this->save();
@@ -227,16 +346,16 @@ class Issues {
 
 	public function update_issue($id, $edits) {
 		global $config;
-		if (!isset($edits['issue_status'])
+		if (!canAccess('update_issue')
+			|| !isset($edits['issue_status'])
 			|| !isset($edits['issue_assignedto'])
 			|| !isset($edits['issue_dependencies'])
 			|| !isset($edits['issue_labels'])
 			|| !isset($edits['issue_open'])
 			|| !isset($edits['token'])
-			|| !canAccess('update_issue')
-			|| !isset($this->issues[$id])
-			|| !array_key_exists($edits['issue_status'], $config['statuses']))
-			{ return Trad::A_ERROR_FORM; }
+			|| !$this->exists($id)
+			|| !array_key_exists($edits['issue_status'], $config['statuses'])
+		) { return Trad::A_ERROR_FORM; }
 		if (!tokenOk($edits['token'])) {
 			return Trad::A_ERROR_TOKEN;
 		}
@@ -253,7 +372,9 @@ class Issues {
 			$depends = explode(',', $edits['issue_dependencies']);
 			foreach ($depends as $d) {
 				$d = str_replace(array('#', ' '), '', $d);
-				if (isset($this->issues[$d])) {
+				# if the user can't see private issues, we do not want to
+				# delete private dependencies
+				if ($this->exists($d, false)) {
 					$dependencies[] = $d;
 				}
 			}
@@ -264,8 +385,9 @@ class Issues {
 			$la = explode(',', $edits['issue_labels']);
 			foreach ($la as $v) {
 				if (isset($config['labels'][$v])) {
-					if ($v == PRIVATE_LABEL && !canAccess('private_issues')) { continue; }
-					$labels[] = $v;
+					if ($v != PRIVATE_LABEL || canAccess('private_issues')) {
+						$labels[] = $v;
+					}
 				}
 			}
 		}
@@ -275,8 +397,8 @@ class Issues {
 		elseif ($edits['issue_open'] == 'closed') { $open = false; }
 
 		if ($config['loggedin']
-			&& isset($config['users'][$_SESSION['id']]))
-		{
+			&& isset($config['users'][$_SESSION['id']])
+		) {
 			$by = intval($_SESSION['id']);
 		}
 		else { $by = NULL; }
@@ -363,22 +485,21 @@ class Issues {
 
 	public function comment($id, $post) {
 		global $config;
-		if (!isset($post['comment'])
+		if (!canAccess('post_comment')
+			|| !isset($post['comment'])
 			|| empty($post['comment'])
 			|| !isset($post['comment_uploads'])
 			|| !isset($post['token'])
-			|| !canAccess('post_comment')
-			|| !isset($this->issues[$id])
-			|| (in_array(PRIVATE_LABEL, $this->issues[$id]['labels']) && !canAccess('issues_private'))
-			|| !$this->issues[$id]['open'])
-			{ return Trad::A_ERROR_FORM; }
+			|| !$this->exists($id)
+			|| !$this->issues[$id]['open']
+		) { return Trad::A_ERROR_FORM; }
 		if (!tokenOk($post['token'])) {
 			return Trad::A_ERROR_TOKEN;
 		}
 
 		if ($config['loggedin']
-			&& isset($config['users'][$_SESSION['id']]))
-		{
+			&& isset($config['users'][$_SESSION['id']])
+		) {
 			$by = intval($_SESSION['id']);
 		}
 		else { $by = NULL; }
@@ -409,8 +530,8 @@ class Issues {
 
 		if ($by !== NULL
 			&& $config['users'][$by]['notifications'] != 'never'
-			&& !isset($this->issues[$id]['mailto'][$by]))
-		{
+			&& !isset($this->issues[$id]['mailto'][$by])
+		) {
 			$this->update_mailto($id, array($by => true));
 		}
 		$mailto = $this->issues[$id]['mailto'];
@@ -419,15 +540,23 @@ class Issues {
 			'%id%' => $id,
 			'%summary%' => $this->issues[$id]['summary'],
 			'%by%' => Text::username($by),
-			'%url%' => Url::parse($this->project.'/issues/'.$id, array(), 'e-'.$cid)
+			'%url%' => Url::parse(
+				$this->project.'/issues/'.$id,
+				array(),
+				'e-'.$cid
+			)
 		));
 		foreach ($config['users'] as $u) {
-			if ($u['notifications'] == 'never' || $u['notifications'] == 'me') {
+			if ($u['notifications'] == 'never'
+				|| $u['notifications'] == 'me'
+			) {
 				if (!isset($mailto[$u['id']])) { continue; }
 				elseif (!$mailto[$u['id']]) { continue; }
 			}
 			if ($u['id'] == $by) { continue; }
-			$mail->replace_personal(array('%username%' => Text::username($u['id'])));
+			$mail->replace_personal(array(
+				'%username%' => Text::username($u['id'])
+			));
 			$mail->send($u['email']);
 		}
 
@@ -440,9 +569,9 @@ class Issues {
 		if (!isset($edits['comment'])
 			|| !isset($edits['comment_id'])
 			|| !isset($edits['token'])
-			|| !isset($this->issues[$id])
-			|| !isset($this->issues[$id]['edits'][$edits['comment_id']]))
-			{ return Trad::A_ERROR_FORM; }
+			|| !$this->exists($id)
+			|| !isset($this->issues[$id]['edits'][$edits['comment_id']])
+		) { return Trad::A_ERROR_FORM; }
 		if (!tokenOk($edits['token'])) {
 			return Trad::A_ERROR_TOKEN;
 		}
@@ -451,8 +580,8 @@ class Issues {
 		$comment = &$this->issues[$id]['edits'][$edits['comment_id']];
 
 		if (!canAccess('edit_comment')
-			&& (!$config['loggedin'] || $_SESSION['id'] != $comment['by']))
-		{ return Trad::A_ERROR_FORM; }
+			&& (!$config['loggedin'] || $_SESSION['id'] != $comment['by'])
+		) { return Trad::A_ERROR_FORM; }
 		
 		if (empty($edits['comment'])) {
 			return Trad::A_ERROR_EMPTY_COMMENT;
@@ -466,19 +595,19 @@ class Issues {
 
 	public function delete_comment($id, $post) {
 		global $config;
-		if (!isset($this->issues[$id])
+		if (!$this->exists($id)
 			|| !isset($post['comment_id'])
 			|| !isset($post['token'])
-			|| !isset($this->issues[$id]['edits'][$post['comment_id']]))
-		{ return Trad::A_ERROR_FORM; }
+			|| !isset($this->issues[$id]['edits'][$post['comment_id']])
+		) { return Trad::A_ERROR_FORM; }
 		if (!tokenOk($post['token'])) {
 			return Trad::A_ERROR_TOKEN;
 		}
 
 		$comment = $this->issues[$id]['edits'][$post['comment_id']];
 		if (!canAccess('edit_comment')
-			&& (!$config['loggedin'] || $_SESSION['id'] != $comment['by']))
-		{ return Trad::A_ERROR_FORM; }
+			&& (!$config['loggedin'] || $_SESSION['id'] != $comment['by'])
+		) { return Trad::A_ERROR_FORM; }
 
 		// We don't destroy it because we don't want to give its ID to a new comment
 		$this->issues[$id]['edits'][$post['comment_id']] = array();
@@ -489,14 +618,12 @@ class Issues {
 
 	public function change_notif($id, $post) {
 		global $config;
-		if (!isset($this->issues[$id])
+		if (!$this->exists($id)
 			|| !isset($post['change_notif'])
 			|| !isset($post['token'])
 			|| !$config['loggedin']
-			|| !isset($config['users'][$_SESSION['id']]))
-		{
-			return Trad::A_ERROR_FORM;
-		}
+			|| !isset($config['users'][$_SESSION['id']])
+		) { return Trad::A_ERROR_FORM; }
 		if (!tokenOk($post['token'])) {
 			return Trad::A_ERROR_TOKEN;
 		}
@@ -510,8 +637,8 @@ class Issues {
 	protected function update_mailto($id, $add = array()) {
 		global $config;
 		if (!isset($this->issues[$id])
-			|| !is_array($add))
-		{
+			|| !is_array($add)
+		) {
 			return false;
 		}
 		$mailto = &$this->issues[$id]['mailto'];

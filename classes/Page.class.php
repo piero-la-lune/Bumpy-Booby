@@ -8,15 +8,35 @@ class Page {
 	protected $javascript;
 	protected $errors = array();
 
-	private $pages = array('home', 'install', 'dashboard', 'issues', 'search', 'view_issue', 'new_issue', 'view_user', 'settings', 'error/403', 'error/404', 'signup');
-	private $need_project = array('dashboard', 'issues', 'search', 'view_issue', 'new_issue');
+	private $pages = array(
+		'home',
+		'install',
+		'dashboard',
+		'issues',
+		'search',
+		'view_issue',
+		'new_issue',
+		'view_user',
+		'settings',
+		'error/403',
+		'error/404',
+		'signup'
+	);
+	private $need_project = array(
+		'dashboard',
+		'issues',
+		'search',
+		'view_issue',
+		'new_issue'
+	);
 
 	public function load($page) {
 		$this->page = $page;
 		$path = dirname(__FILE__).'/../pages/'.$page.'.php';
 		if (!in_array($page, $this->pages)
 			|| (in_array($page, $this->need_project) && !getProject())
-			|| !is_file($path)) {
+			|| !is_file($path)
+		) {
 			$this->page = 'error/404';
 			$path = dirname(__FILE__).'/../pages/error/404.php';
 		}
@@ -62,7 +82,12 @@ class Page {
 			unset($_SESSION['alert']);
 		}
 		foreach ($this->errors as $error) {
-			$txt .= '<div class="alert '.$error['type'].'"><button type="button" class="close" data-dismiss="alert">×</button>'.$error['text'].'</div>';
+			$txt .= '<div class="alert '.$error['type'].'">'
+				.'<button type="button" class="close" data-dismiss="alert">'
+					.'×'
+				.'</button>'
+				.$error['text']
+			.'</div>';
 		}
 		return $txt;
 	}

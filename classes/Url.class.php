@@ -124,7 +124,9 @@ class Url {
 		foreach (self::$rewriting as $v) {
 			$rule = '#'.$v['rule'].'#';
 			if (preg_match($rule, $page)) {
-				if (isset($v['condition']) && $v['condition'] == 'file_doesnt_exist') {
+				if (isset($v['condition'])
+					&& $v['condition'] == 'file_doesnt_exist'
+				) {
 					if (!file_exists($page)) {
 						return preg_replace($rule, $v['redirect'], $page);
 					}

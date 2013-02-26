@@ -12,6 +12,8 @@ class Trad {
 	const W_COMMENTED = 'Commented';
 	const W_NOBODY = 'nobody';
 	const W_SOMEONE = 'someone';
+	const W_ENABLED = 'Enabled';
+	const W_DISABLED = 'Disabled';
 
 	const W_EXAMPLE = 'Example';
 	const W_HEX = 'Hex';
@@ -27,6 +29,14 @@ class Trad {
 	const W_MONTH = 'month';
 	const W_YEAR = 'year';
 	const W_DECADE = 'decad';
+	const W_SECONDE_P = 'seconds';
+	const W_MINUTE_P = 'minutes';
+	const W_HOUR_P = 'hours';
+	const W_DAY_P = 'days';
+	const W_WEEK_P = 'weeks';
+	const W_MONTH_P = 'months';
+	const W_YEAR_P = 'years';
+	const W_DECADE_P = 'decads';
 
 	const W_PREVIOUS = 'Previous';
 	const W_NEXT = 'Next';
@@ -52,6 +62,9 @@ class Trad {
 		# Verbes
 
 	const V_UPDATE = 'Update';
+	const V_UPDATE_DETAILS = 'Update details';
+	const V_UPDATE_CONTENT = 'Update content';
+	const V_UPDATE_AND = 'Update & %adjective%';
 	const V_CANCEL = 'Cancel';
 	const V_PREVIEW = 'Preview';
 	const V_COMMENT = 'Comment';
@@ -63,6 +76,9 @@ class Trad {
 	const V_EDIT = 'Edit';
 	const V_SIGNUP = 'Sign up';
 	const V_CONTINUE = 'Continue';
+	const V_REMOVE_ISSUE = 'Delete issue';
+	const V_CLOSE = 'close';
+	const V_REOPEN = 'reopen';
 
 		# Sentencies
 
@@ -175,7 +191,6 @@ This is an automated email, please do not reply.
 	const T_USERS = 'Users';
 	const T_BROWSE_ISSUES = 'Browse issues';
 	const T_NEW_ISSUE = 'New issue';
-	const T_OPTIONS = 'Options';
 	const T_PROJECTS = 'Projects';
 	const T_DASHBOARD = 'Dashboard';
 	const T_LAST_UPDATES = 'Last updates';
@@ -202,6 +217,15 @@ This is an automated email, please do not reply.
 	const F_NOTIFICATIONS = 'Be notified:';
 	const F_PROJECT_X = 'Project “%name%”:';
 	const F_LANGUAGE = 'Language:';
+	const F_LOGS = 'Logs:';
+
+	const F_ISSUES_PAGE = 'Issues per page:';
+	const F_ISSUES_PAGE_SEARCH = 'Issues per page (search):';
+	const F_PREVIEW_ISSUE = 'Previews length (issues):';
+	const F_PREVIEW_SEARCH = 'Previews length (search):';
+	const F_PREVIEW_PROJECT = 'Previews length (projects):';
+	const F_LAST_EDITS = 'Number of issues displayed on dashboards:';
+	const F_LAST_ACTIVITY = 'Number of issues displayed on user pages:';
 
 	const F_ADD_PROJECT = 'New project';
 	const F_ADD_COLOR = 'New color';
@@ -210,14 +234,14 @@ This is an automated email, please do not reply.
 	const F_ADD_GROUP = 'New group';
 	const F_ADD_USER = 'New user';
 
-	const F_SORT_BY = 'Sort by';
+	const F_SORT_BY = 'Sort by:';
 	const F_SORT_ID = 'ID';
 	const F_SORT_MOD = 'last update';
 	const F_SORT_DESC = 'descending';
 	const F_SORT_ASC = 'ascending';
 	const F_FILTER_STATUSES = 'Filter statuses:';
 	const F_FILTER_STATES = 'Filter states:';
-	const F_FILTERS = 'Filters:';
+	const F_FILTER_LABELS = 'Filter labels:';
 
 	const F_WRITE = 'Write:';
 	const F_SUMMARY = 'Summary';
@@ -232,6 +256,7 @@ This is an automated email, please do not reply.
 	const F_DATABASE = 'Database:';
 	const F_UPLOADS = 'Uploads:';
 	const F_COLORS = 'Manage colors:';
+	const F_DISPLAY = 'Manage display :';
 	const F_STATUSES = 'Manage statuses:';
 	const F_LABELS = 'Manage labels:';
 	const F_GROUPS = 'Manage groups:';

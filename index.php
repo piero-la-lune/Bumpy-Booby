@@ -12,9 +12,9 @@ define('VERSION', '0.1');
 define('AUTHOR', 'Pierre Monchalin');
 define('URL', 'http://bumpy-booby.derivoile.fr');
 
-# LANGUAGES
+### Languages
 define('LANGUAGES', 'en,fr'); # Separated by a comma
-define('DEFAULT_LANGUAGE', 'en'); # Used only for installation
+define('DEFAULT_LANGUAGE', 'en'); # Used only during installation
 
 ### Directories and files
 define('DIR_DATABASE', dirname(__FILE__).'/database/');
@@ -33,14 +33,16 @@ define('DEFAULT_COLOR', '#333333');
 define('DEFAULT_STATUS', 'default');
 define('DEFAULT_GROUP', 'default');
 define('DEFAULT_GROUP_SUPERUSER', 'superuser');
+define('DEFAULT_USER', 'nobody');
 define('DEFAULT_PROJECT', 'default');
 define('PRIVATE_LABEL', 'private');
-define('TIMEOUT', 3600); // 1 hour
-define('TIMEOUT_TOKENS', 900); // 15 minutes
+define('TIMEOUT', 3600); # 1 hour
+define('TIMEOUT_TOKENS', 900); # 15 minutes
+define('SALT', 'How are you doing, pumpkin?');
 
 ### Thanks to Sebsauvage and Shaarli for the way I store data
-define('PHPPREFIX', '<?php /* '); // Prefix to encapsulate data in php code.
-define('PHPSUFFIX', ' */ ?>'); // Suffix to encapsulate data in php code.
+define('PHPPREFIX', '<?php /* '); # Prefix to encapsulate data in php code.
+define('PHPSUFFIX', ' */ ?>'); # Suffix to encapsulate data in php code.
 
 ### Default settings
 if (is_file(DIR_DATABASE.FILE_CONFIG)) {
@@ -63,10 +65,14 @@ else {
 
 ### Manage sessions
 $cookie = session_get_cookie_params();
-session_set_cookie_params($cookie['lifetime'], Text::dir($_SERVER["SCRIPT_NAME"]));// Force cookie path (but do not change lifetime)
-ini_set('session.use_cookies', 1);       // Use cookies to store session.
-ini_set('session.use_only_cookies', 1);  // Force cookies for session.
-ini_set('session.use_trans_sid', false); // Prevent php to use sessionID in URL if cookies are disabled.
+	# Force cookie path (but do not change lifetime)
+session_set_cookie_params($cookie['lifetime'], Text::dir($_SERVER["SCRIPT_NAME"]));
+	# Use cookies to store session.
+ini_set('session.use_cookies', 1);
+	# Force cookies for session.
+ini_set('session.use_only_cookies', 1);
+	# Prevent php to use sessionID in URL if cookies are disabled.
+ini_set('session.use_trans_sid', false);
 session_name('BumpyBooby');
 session_start();
 
@@ -87,7 +93,9 @@ function getProject() {
 }
 function onlyDefaultProject() {
 	global $config;
-	if (count($config['projects']) == 1 && isset($config['projects'][DEFAULT_PROJECT])) {
+	if (count($config['projects']) == 1
+		&& isset($config['projects'][DEFAULT_PROJECT])
+	) {
 		return true;
 	}
 	return false;
@@ -143,7 +151,8 @@ function tokenOk($token) {
     return false; // Wrong token, or already used.
 }
 
-### Returns the IP address of the client (used to prevent session cookie hijacking)
+### Returns the IP address of the client
+# (used to prevent session cookie hijacking)
 function getAllIPs() {
     $ip = $_SERVER["REMOTE_ADDR"];
     if (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
@@ -164,7 +173,10 @@ function logout() {
 		unset($_SESSION['ip']);
 	}
 }
-if (isset($_POST['login']) && isset($_POST['username']) && isset($_POST['password'])) {
+if (isset($_POST['login'])
+	&& isset($_POST['username'])
+	&& isset($_POST['password'])
+) {
 	logout();
 	$settings = new Settings;
 	$matching_user = array();
@@ -181,7 +193,11 @@ if (isset($_POST['login']) && isset($_POST['username']) && isset($_POST['passwor
 		}
 	}
 	if ($wait > time()) {
-		$page->addAlert(str_replace(array('%duration%', '%period%'), Text::timeDiff($wait, time()), Trad::A_ERROR_LOGIN_WAIT));
+		$page->addAlert(str_replace(
+			array('%duration%', '%period%'),
+			Text::timeDiff($wait, time()),
+			Trad::A_ERROR_LOGIN_WAIT
+		));
 	}
 	elseif (!empty($matching_user)) {
 		$_SESSION['uid'] = Text::randomKey(40);
@@ -197,7 +213,11 @@ if (isset($_POST['login']) && isset($_POST['username']) && isset($_POST['passwor
 		$page->addAlert(Trad::A_LOGGED, 'alert-success');
 	}
 	else {
-		logm('Login failed for user “'.str_replace(array("\n", "\t"), '', $_POST['username']).'”');
+		logm('Login failed for user “'.str_replace(
+			array("\n", "\t"),
+			'',
+			$_POST['username'])
+		.'”');
 		$wait = time();
 		foreach ($config['users'] as $u) {
 			if ($u['username'] == $_POST['username']) {
@@ -205,7 +225,11 @@ if (isset($_POST['login']) && isset($_POST['username']) && isset($_POST['passwor
 			}
 		}
 		if ($wait > time()) {
-			$page->addAlert(str_replace(array('%duration%', '%period%'), Text::timeDiff($wait,time()), Trad::A_ERROR_CONNEXION_WAIT));
+			$page->addAlert(str_replace(
+				array('%duration%', '%period%'),
+				Text::timeDiff($wait,time()),
+				Trad::A_ERROR_CONNEXION_WAIT
+			));
 		}
 		else {
 			$page->addAlert(Trad::A_ERROR_CONNEXION);
@@ -216,7 +240,11 @@ elseif (isset($_POST['logout'])) {
 	logout();
 	$page->addAlert(Trad::A_LOGGED_OUT, 'alert-success');
 }
-if (!isset($_SESSION['uid']) || empty($_SESSION['uid']) || $_SESSION['ip'] != getAllIPs() || time() > $_SESSION['expires_on']) {
+if (!isset($_SESSION['uid'])
+	|| empty($_SESSION['uid'])
+	|| $_SESSION['ip'] != getAllIPs()
+	|| time() > $_SESSION['expires_on']
+) {
 	logout();
 	$config['loggedin'] = false;
 }
@@ -231,23 +259,36 @@ function update_file($filename, $content) {
 		|| strcmp(file_get_contents(DIR_DATABASE.$filename), $content) != 0)
 	{
 		logm('Enable to write file “'. DIR_DATABASE.$filename.'”');
-		Text::stop(str_replace('%name%', DIR_DATABASE.$filename, Trad::A_ERROR_FILE_WRITE));
+		Text::stop(str_replace(
+			'%name%',
+			DIR_DATABASE.$filename,
+			Trad::A_ERROR_FILE_WRITE
+		));
 	}
 }
 function get_file($filename) {
 	$text = file_get_contents(DIR_DATABASE.$filename);
 	if ($text === false) {
 		logm('Enable to read file “'. DIR_DATABASE.$filename.'”');
-		Text::stop(str_replace('%name%', DIR_DATABASE.$filename, Trad::A_ERROR_FILE));
+		Text::stop(str_replace(
+			'%name%',
+			DIR_DATABASE.$filename,
+			Trad::A_ERROR_FILE
+		));
 	}
 	return $text;
 }
 function check_dir($dirname) {
 	if (!is_dir(DIR_DATABASE.$dirname)
-		&& (!mkdir(DIR_DATABASE.$dirname, 0705) || !chmod(DIR_DATABASE.$dirname, 0705)))
-	{
+		&& (!mkdir(DIR_DATABASE.$dirname, 0705)
+			|| !chmod(DIR_DATABASE.$dirname, 0705))
+	) {
 		logm('Enable to create directory “'. DIR_DATABASE.$filename.'”');
-		Text::stop(str_replace('%name%', DIR_DATABASE.$dirname, Trad::A_ERROR_DIRECTORY));
+		Text::stop(str_replace(
+			'%name%',
+			DIR_DATABASE.$dirname,
+			Trad::A_ERROR_DIRECTORY)
+		);
 	}
 }
 function check_file($filename, $content = '') {
@@ -286,7 +327,8 @@ else {
 	}
 	elseif ($_GET['page'] == 'downloads') {
 		require dirname(__FILE__).'/pages/downloads.php';
-		# we do not exit because we want to load error/404 or error/403 in some cases
+		# We do not exit because we want to load error/404 or error/403
+		# in some cases
 	}
 	else {
 		$page->load($_GET['page']);
@@ -296,40 +338,36 @@ else {
 $menu = '';
 if (getProject()) {
 	if (canAccess('dashboard')) {
-		$menu .= '
-			<li class="m_dashboard">
-				<a href="'.Url::parse(getProject().'/dashboard').'">'.Trad::T_DASHBOARD.'</a>
-			</li>
-		';
+		$menu .= '<li class="m_dashboard">'
+			.'<a href="'.Url::parse(getProject().'/dashboard').'">'
+				.Trad::T_DASHBOARD
+			.'</a>'
+		.'</li>';
 	}
 	if (canAccess('issues')) {
-		$menu .= '
-			<li class="m_issues">
-				<a href="'.Url::parse(getProject().'/issues').'">'.Trad::T_BROWSE_ISSUES.'</a>
-			</li>
-		';
+		$menu .= '<li class="m_issues">'
+			.'<a href="'.Url::parse(getProject().'/issues').'">'
+				.Trad::T_BROWSE_ISSUES
+			.'</a>'
+		.'</li>';
 	}
 	if (canAccess('new_issue')) {
-		$menu .= '
-			<li class="m_newissue">
-				<a href="'.Url::parse(getProject().'/issues/new').'">'.Trad::T_NEW_ISSUE.'</a>
-			</li>
-		';
+		$menu .= '<li class="m_newissue">'
+			.'<a href="'.Url::parse(getProject().'/issues/new').'">'
+				.Trad::T_NEW_ISSUE
+			.'</a>'
+		.'</li>';
 	}
 }
 elseif (canAccess('home')) {
-	$menu = '
-		<li class="m_home">
-			<a href="'.Url::parse('home').'">'.Trad::T_PROJECTS.'</a>
-		</li>
-	';
+	$menu = '<li class="m_home">'
+		.'<a href="'.Url::parse('home').'">'.Trad::T_PROJECTS.'</a>'
+	.'</li>';
 }
 if (canAccess('settings')) {
-	$menu .= '
-		<li class="m_settings">
-			<a href="'.Url::parse('settings').'">'.Trad::T_SETTINGS.'</a>
-		</li>
-	';
+	$menu .= '<li class="m_settings">'
+		.'<a href="'.Url::parse('settings').'">'.Trad::T_SETTINGS.'</a>'
+	.'</li>';
 }
 
 ?>
@@ -351,7 +389,8 @@ if (canAccess('settings')) {
 		<link rel="shortcut icon" href="<?php echo Url::parse('favicon.ico'); ?>" />
 		<link rel="apple-touch-icon" href="<?php echo Url::parse('apple-touch-icon.png'); ?>" />
 
-		<link rel="stylesheet" href="<?php echo Url::parse('public/css/app.min.css'); ?>" />
+		<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,900" />
+		<link rel="stylesheet" href="<?php echo Url::parse('public/css/app2.min.css'); ?>" />
 		<link rel="stylesheet" href="<?php echo Url::parse('public/css/highlighter.css'); ?>" />
 
 		<!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
@@ -388,7 +427,7 @@ if (canAccess('settings')) {
 		<div class="main">
 
 			<aside class="main-right in">
-				<div class="main-right-inner">
+				<div class="main-right-inner div-affix">
 					<nav>
 						<ul>
 							<?php echo $menu; ?>
@@ -465,37 +504,19 @@ if (canAccess('settings')) {
 		<script src="<?php echo Url::parse('public/js/highlighter.js'); ?>"></script>
 		<script src="<?php echo Url::parse('public/js/jquery-1.8.1.min.js'); ?>"></script>
 		<script>
-			function highlighter(e, f) {
-				hljs.highlightBlock(f);
-				var regex = /^\n+|\n+$/g;
-				var text = e.html().replace(regex, '');
-				if (e.hasClass("blank")) { e.html(text); }
-				else {
-					var nb = text.split(/\n/).length;
-					var html = "<table><td class=\"td-nb\">";
-					for (var i = 1; i < nb+1; i++) {
-						html += "<span class=\"span-nb\" unselectable=\"on\">"+i+"</span>\n";
-					};
-					e.html(html+"</td><td class=\"td-code\">"+text+"</td></tr></table>");
-				}
-			}
-			$(document).ready(function(){
-				$(<?php echo '".m_'.$page->getSafePage().'"'; ?>).addClass("active");
-				$(".a-display-right, .div-hover").click(function() {
-					$(".main-right").toggleClass("out").toggleClass("in");
-					$(".div-hover").toggle();
-				});
-				$(".box-settings .top").click(function() {
-					$(this).find("i").toggleClass("icon-chevron-down").toggleClass("icon-chevron-up");
-					$(this).closest(".box-settings").find(".box-in").slideToggle();
-				});
-				$(".a-help-markdown").click(function() {
-					$(this).closest(".box").find(".div-help-markdown").toggle();
-				});
-				$(".close").click(function() { $(this).closest(".alert").hide(); });
-				$(".disabled").live("click", function() { return false; });
-				$("pre code").each(function(i,e) { highlighter($(this), e); });
+			var ajax = "<?php echo Url::parse('public/ajax'); ?>",
+				token = "<?php echo getToken(); ?>",
+				verb_edit = "<?php echo Trad::V_EDIT; ?>",
+				verb_preview = "<?php echo Trad::V_PREVIEW; ?>",
+				confirm_delete_issue = "<?php echo Trad::A_CONFIRM_DELETE_ISSUE; ?>",
+				confirm_delete_comment = "<?php echo Trad::A_CONFIRM_DELETE_COMMENT; ?>",
+				confirm_delete_upload = "<?php echo Trad::A_CONFIRM_DELETE_UPLOAD; ?>";
+			$(document).ready(function() {
+				$(".m_<?php echo $page->getSafePage(); ?>").addClass("active");
 			});
+		</script>
+		<script src="<?php echo Url::parse('public/js/scripts.js'); ?>"></script>
+		<script>
 			<?php echo $page->getJavascript(); ?>
 		</script>
 

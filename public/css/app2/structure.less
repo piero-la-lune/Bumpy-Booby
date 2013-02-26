@@ -1,0 +1,119 @@
+html, body {
+	margin: 0;
+	padding: 0;
+}
+
+body {
+	font-size: @font-size;
+	font-weight: normal;
+	font-family: @font-family;
+	background: @bgd-grey;
+	color: @text-black;
+}
+
+header {
+	background: @bgd-blue;
+	padding: 8px 16px;
+	color: lighten(@bgd-blue, 40%);
+	font-weight: 900;
+	a {
+		color: lighten(@bgd-blue, 40%);
+		&:hover {
+			color: #fff;
+		}
+	}
+	.brand {
+		display: inline;
+		font-size: 2em;
+	}
+	.slash {
+		padding: 0 10px;
+	}
+	.a-project {
+		color: #fff;
+	}
+	.a-display-right, .nav-bar {
+		display: none;
+	}
+}
+
+.main {
+	display: table;
+	table-layout: fixed;
+	width: 100%;
+	margin-top: 12px;
+}
+.main-right, .main-left {
+	display: table-cell;
+	vertical-align: top;
+}
+.main-right {
+	width: @width-aside;
+}
+.main-right-inner {
+	width: @width-aside - 24px;
+	background: @bgd-blue;
+	padding: 12px;
+	a { color: lighten(@bgd-blue, 40%); }
+	a:hover, .active a {  color: #fff; }
+	nav ul {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		font-weight: 900;
+		font-size: 1.2em;
+		li { display: block }
+		a {
+			display: block;
+			text-align: center;
+		}
+	}
+	nav, .form-search, .form-log-in, .form-log-out {
+		padding-bottom: 8px;
+		margin-bottom: 8px;
+		border-bottom: 1px solid lighten(@bgd-blue, 20%);
+	}
+	.form-search, .form-log-in {
+		button { display: none; }
+	}
+	.form-log-in {
+		a {
+			display: block;
+			text-align: center;
+			font-size: 1.2em;
+			font-weight: 900;
+			margin-bottom: 8px;
+		}
+	}
+	.form-log-out {
+		text-align: center;
+		color: lighten(@bgd-blue, 40%);
+		a {
+			font-weight: 900;
+		}
+	}
+	.div-labels {
+		text-align: center;
+		.label {
+			border: 1px solid lighten(@bgd-blue, 20%);
+			&:hover { border-color: lighten(@bgd-blue, 40%); }
+		}
+	}
+}
+.main-left {
+	padding: 0 12px 12px 12px;
+}
+
+footer {
+	display: none;
+}
+
+.aligned-bottom {
+	vertical-align: bottom;
+}
+.aligned-fixed {
+	.div-affix {
+		position: fixed;
+		top: 12px;
+	}
+}

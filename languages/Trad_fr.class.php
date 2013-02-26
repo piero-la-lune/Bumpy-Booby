@@ -12,6 +12,8 @@ class Trad {
 	const W_COMMENTED = 'Commenté';
 	const W_NOBODY = 'personne';
 	const W_SOMEONE = 'quelqu\'un';
+	const W_ENABLED = 'Activé';
+	const W_DISABLED = 'Désactivé';
 
 	const W_EXAMPLE = 'Exemple';
 	const W_HEX = 'Hex';
@@ -27,6 +29,14 @@ class Trad {
 	const W_MONTH = 'mois';
 	const W_YEAR = 'année';
 	const W_DECADE = 'décennie';
+	const W_SECONDE_P = 'secondes';
+	const W_MINUTE_P = 'minutes';
+	const W_HOUR_P = 'heures';
+	const W_DAY_P = 'jours';
+	const W_WEEK_P = 'semaines';
+	const W_MONTH_P = 'mois';
+	const W_YEAR_P = 'années';
+	const W_DECADE_P = 'décennies';
 
 	const W_PREVIOUS = 'Précédente';
 	const W_NEXT = 'Suivante';
@@ -52,6 +62,9 @@ class Trad {
 		# Verbes
 
 	const V_UPDATE = 'Mettre à jour';
+	const V_UPDATE_DETAILS = 'Mettre à jour la demande';
+	const V_UPDATE_CONTENT = 'Mettre à jour le contenu';
+	const V_UPDATE_AND = 'Mettre à jour & %adjective%';
 	const V_CANCEL = 'Annuler';
 	const V_PREVIEW = 'Aperçu';
 	const V_COMMENT = 'Commenter';
@@ -63,6 +76,9 @@ class Trad {
 	const V_EDIT = 'Modifier';
 	const V_SIGNUP = 'S\'inscrire';
 	const V_CONTINUE = 'Continuer';
+	const V_REMOVE_ISSUE = 'Supprimer la demande';
+	const V_CLOSE = 'fermer';
+	const V_REOPEN = 'réouvrir';
 
 		# Phrases
 
@@ -118,7 +134,7 @@ class Trad {
 
 	const A_CONFIRM_DELETE_COMMENT = 'Voulez-vous vraiment supprimer ce commentaire ?';
 	const A_SUCCESS_DELETE_COMMENT = 'Le commentaire a été supprimé.';
-	const A_CONFIRM_DELETE_ISSUE = 'Voulez-vous vrraiment supprimer cette demande ?';
+	const A_CONFIRM_DELETE_ISSUE = 'Voulez-vous vraiment supprimer cette demande ?';
 	const A_SUCCESS_DELETE_ISSUE = 'La demande a été supprimée.';
 	const A_CONFIRM_DELETE_UPLOAD = 'Voulez-vous vraiment supprimer ce fichier ?';
 	const A_CONFIRM_DELETE_PROJECT = 'Voulez-vous vraiment supprimer ce projet. Toutes les demandes correspondantes seront perdues.';
@@ -175,7 +191,6 @@ Ceci est un message automatisé. Merci de ne pas y répondre.
 	const T_USERS = 'Utilisateurs';
 	const T_BROWSE_ISSUES = 'Parcourir les demandes';
 	const T_NEW_ISSUE = 'Nouvelle demande';
-	const T_OPTIONS = 'Options';
 	const T_PROJECTS = 'Projets';
 	const T_DASHBOARD = 'Tableau de bord';
 	const T_LAST_UPDATES = 'Dernières mises à jour';
@@ -202,6 +217,15 @@ Ceci est un message automatisé. Merci de ne pas y répondre.
 	const F_NOTIFICATIONS = 'Être averti :';
 	const F_PROJECT_X = 'Projet « %name% » :';
 	const F_LANGUAGE = 'Langue :';
+	const F_LOGS = 'Logs :';
+
+	const F_ISSUES_PAGE = 'Demandes par page :';
+	const F_ISSUES_PAGE_SEARCH = 'Demandes par page (recherche) :';
+	const F_PREVIEW_ISSUE = 'Longueur des extraits (demandes) :';
+	const F_PREVIEW_SEARCH = 'Longueur des extraits (recherche) :';
+	const F_PREVIEW_PROJECT = 'Longueur des extraits (projets) :';
+	const F_LAST_EDITS = 'Nombre de demandes affichées sur les tableaux de bord:';
+	const F_LAST_ACTIVITY = 'Nombre de demandes affichées sur la page des utilisateurs :';
 
 	const F_ADD_PROJECT = 'Nouveau projet';
 	const F_ADD_COLOR = 'Nouvelle couleur';
@@ -210,14 +234,14 @@ Ceci est un message automatisé. Merci de ne pas y répondre.
 	const F_ADD_GROUP = 'Nouveau groupe';
 	const F_ADD_USER = 'Nouveau utilisateur';
 
-	const F_SORT_BY = 'Trier par';
+	const F_SORT_BY = 'Trier par :';
 	const F_SORT_ID = 'ID';
-	const F_SORT_MOD = 'dernière mise à jour';
+	const F_SORT_MOD = 'mise à jour';
 	const F_SORT_DESC = 'décroissant';
 	const F_SORT_ASC = 'croissant';
 	const F_FILTER_STATUSES = 'Filtrer les statuts :';
 	const F_FILTER_STATES = 'Filtrer les états :';
-	const F_FILTERS = 'Filtres :';
+	const F_FILTER_LABELS = 'Filtrer les labels :';
 
 	const F_WRITE = 'Écrire :';
 	const F_SUMMARY = 'Résumé';
@@ -232,6 +256,7 @@ Ceci est un message automatisé. Merci de ne pas y répondre.
 	const F_DATABASE = 'Base de données :';
 	const F_UPLOADS = 'Fichiers téléchargés :';
 	const F_COLORS = 'Gérer les couleurs :';
+	const F_DISPLAY = 'Gérer l\'affichage :';
 	const F_STATUSES = 'Gérer les statuts :';
 	const F_LABELS = 'Gérer les étiquettes :';
 	const F_GROUPS = 'Gérer les groupes :';
