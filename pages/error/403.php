@@ -2,11 +2,11 @@
 
 header('HTTP/1.1 403 Forbidden');
 
-$title = 'Forbidden';
+$title = Trad::W_FORBIDDEN;
 
 $content = '
-	<h1>403 – Forbidden</h1>
-	<p>You are not allowed to access this page. Please log in/out to continue.</p>
+	<h1>403 – '.Trad::W_FORBIDDEN.'</h1>
+	<p>'.Trad::S_FORBIDDEN.'</p>
 ';
 
 ?>

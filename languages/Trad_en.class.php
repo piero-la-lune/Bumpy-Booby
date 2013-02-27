@@ -14,6 +14,8 @@ class Trad {
 	const W_SOMEONE = 'someone';
 	const W_ENABLED = 'Enabled';
 	const W_DISABLED = 'Disabled';
+	const W_NOTFOUND = 'Not found';
+	const W_FORBIDDEN = 'Forbidden';
 
 	const W_EXAMPLE = 'Example';
 	const W_HEX = 'Hex';
@@ -94,6 +96,8 @@ class Trad {
 	const S_ALWAYS = 'Of each updates';
 	const S_START_NOTIF = 'Be notified of new updates';
 	const S_STOP_NOTIF = 'No longer be notified of updates';
+	const S_NOTFOUND = 'The page you\'re looking for does not exist anymore...';
+	const S_FORBIDDEN = 'You are not allowed to access this page. Please log in/out to continue.';
 
 	const S_ISSUE_CREATED = 'by %user% %time%';
 	const S_ISSUE_UPDATED = '%adj% by %user% %time%.';

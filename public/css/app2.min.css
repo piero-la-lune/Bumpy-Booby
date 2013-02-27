@@ -200,6 +200,21 @@ footer {
   -moz-border-radius: 8px 0 0 8px;
   border-radius: 8px 0 0 8px;
 }
+.alert {
+  padding: 12px;
+  text-align: center;
+  cursor: pointer;
+  color: #444444;
+}
+.alert:hover {
+  color: #000000;
+}
+.alert-error {
+  background: #FF918E;
+}
+.alert-success {
+  background: #97E25D;
+}
 .div-preview-issue {
   padding: 16px 0 16px 0;
   -webkit-transition: all 0.2s ease-in-out;

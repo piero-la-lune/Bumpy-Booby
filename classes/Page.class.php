@@ -83,9 +83,6 @@ class Page {
 		}
 		foreach ($this->errors as $error) {
 			$txt .= '<div class="alert '.$error['type'].'">'
-				.'<button type="button" class="close" data-dismiss="alert">'
-					.'×'
-				.'</button>'
 				.$error['text']
 			.'</div>';
 		}

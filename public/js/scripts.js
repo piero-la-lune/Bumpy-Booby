@@ -167,7 +167,8 @@ $(document).ready(function(){
 	$(".a-help-markdown").click(function() {
 		$(this).closest(".box").find(".div-help-markdown").toggle();
 	});
-	$(".close").click(function() { $(this).closest(".alert").hide(); });
+	
+	$(".alert").click(function() { $(this).slideUp(); });
 
 // Pie chart
 	$(".pie-statuses").pie();

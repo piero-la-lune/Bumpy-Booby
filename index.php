@@ -403,6 +403,8 @@ if (canAccess('settings')) {
 
 	<body>
 
+		<?php echo $page->getAlerts(); ?>
+
 		<header>
 			<div class="header-inner">
 				<a href="javascript:;" class="a-display-right">
@@ -487,7 +489,6 @@ if (canAccess('settings')) {
 			<section class="main-left">
 				<div class="div-hover"></div>
 
-				<?php echo $page->getAlerts(); ?>
 				<?php echo $page->getContent(); ?>
 
 				<div class="spacer"></div>

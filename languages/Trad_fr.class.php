@@ -14,6 +14,8 @@ class Trad {
 	const W_SOMEONE = 'quelqu\'un';
 	const W_ENABLED = 'Activé';
 	const W_DISABLED = 'Désactivé';
+	const W_NOTFOUND = 'Page non trouvée';
+	const W_FORBIDDEN = 'Accès refusé';
 
 	const W_EXAMPLE = 'Exemple';
 	const W_HEX = 'Hex';
@@ -94,6 +96,8 @@ class Trad {
 	const S_ALWAYS = 'Tout le temps';
 	const S_START_NOTIF = 'Être averti des mises à jour';
 	const S_STOP_NOTIF = 'Ne plus être averti lors des mises à jour';
+	const S_NOTFOUND = 'La page que vous recherchez n\'existe pas...';
+	const S_FORBIDDEN = 'Vous n\'êtes pas autorisé à accèder à cette page. Merci de vous connecter pour continuer.';
 
 	const S_ISSUE_CREATED = 'par %user% %time%';
 	const S_ISSUE_UPDATED = '%adj% par %user% %time%.';
@@ -137,7 +141,7 @@ class Trad {
 	const A_CONFIRM_DELETE_ISSUE = 'Voulez-vous vraiment supprimer cette demande ?';
 	const A_SUCCESS_DELETE_ISSUE = 'La demande a été supprimée.';
 	const A_CONFIRM_DELETE_UPLOAD = 'Voulez-vous vraiment supprimer ce fichier ?';
-	const A_CONFIRM_DELETE_PROJECT = 'Voulez-vous vraiment supprimer ce projet. Toutes les demandes correspondantes seront perdues.';
+	const A_CONFIRM_DELETE_PROJECT = 'Voulez-vous vraiment supprimer ce projet ? Toutes les demandes correspondantes seront perdues.';
 
 	const A_LOGGED = 'Vous êtes maintenant connecté.';
 	const A_LOGGED_OUT = 'Vous êtes maintenant déconnecté.';
