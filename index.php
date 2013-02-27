@@ -176,69 +176,82 @@ function logout() {
 if (isset($_POST['login'])
 	&& isset($_POST['username'])
 	&& isset($_POST['password'])
+	&& isset($_POST['token'])
 ) {
-	logout();
-	$settings = new Settings;
-	$matching_user = array();
-	$wait = time();
-	foreach ($config['users'] as $u) {
-		if ($u['username'] == $_POST['username']) {
-			$wait = max($wait, $u['wait_until']);
-			if ($u['hash'] == Text::getHash($_POST['password'], $_POST['username'])) {
-				$matching_user = $u;
-			}
-			else {
-				$settings->login_failed($u['id']);
-			}
-		}
-	}
-	if ($wait > time()) {
-		$page->addAlert(str_replace(
-			array('%duration%', '%period%'),
-			Text::timeDiff($wait, time()),
-			Trad::A_ERROR_LOGIN_WAIT
-		));
-	}
-	elseif (!empty($matching_user)) {
-		$_SESSION['uid'] = Text::randomKey(40);
-		$_SESSION['id'] = $matching_user['id'];
-		$_SESSION['username'] = $matching_user['username'];
-		$_SESSION['ip'] = getAllIPs();
-		$_SESSION['expires_on'] = time()+TIMEOUT;
-			# 0 means "When browser closes"
-		session_set_cookie_params(0, Text::dir($_SERVER["SCRIPT_NAME"]));
-		session_regenerate_id(true);
-		logm('Login successful.');
-		$settings->login_successful($u['id']);
-		$page->addAlert(Trad::A_LOGGED, 'alert-success');
+	if (!tokenOk($_POST['token'])) {
+		$page->addAlert(Trad::A_ERROR_TOKEN);
 	}
 	else {
-		logm('Login failed for user “'.str_replace(
-			array("\n", "\t"),
-			'',
-			$_POST['username'])
-		.'”');
+		logout();
+		$settings = new Settings;
+		$matching_user = array();
 		$wait = time();
 		foreach ($config['users'] as $u) {
 			if ($u['username'] == $_POST['username']) {
 				$wait = max($wait, $u['wait_until']);
+				if ($u['hash'] ==
+					Text::getHash($_POST['password'], $_POST['username'])
+				) {
+					$matching_user = $u;
+				}
+				else {
+					$settings->login_failed($u['id']);
+				}
 			}
 		}
 		if ($wait > time()) {
 			$page->addAlert(str_replace(
 				array('%duration%', '%period%'),
-				Text::timeDiff($wait,time()),
-				Trad::A_ERROR_CONNEXION_WAIT
+				Text::timeDiff($wait, time()),
+				Trad::A_ERROR_LOGIN_WAIT
 			));
 		}
+		elseif (!empty($matching_user)) {
+			$_SESSION['uid'] = Text::randomKey(40);
+			$_SESSION['id'] = $matching_user['id'];
+			$_SESSION['username'] = $matching_user['username'];
+			$_SESSION['ip'] = getAllIPs();
+			$_SESSION['expires_on'] = time()+TIMEOUT;
+				# 0 means "When browser closes"
+			session_set_cookie_params(0, Text::dir($_SERVER["SCRIPT_NAME"]));
+			session_regenerate_id(true);
+			logm('Login successful.');
+			$settings->login_successful($u['id']);
+			$page->addAlert(Trad::A_LOGGED, 'alert-success');
+		}
 		else {
-			$page->addAlert(Trad::A_ERROR_CONNEXION);
+			logm('Login failed for user “'.str_replace(
+				array("\n", "\t"),
+				'',
+				$_POST['username'])
+			.'”');
+			$wait = time();
+			foreach ($config['users'] as $u) {
+				if ($u['username'] == $_POST['username']) {
+					$wait = max($wait, $u['wait_until']);
+				}
+			}
+			if ($wait > time()) {
+				$page->addAlert(str_replace(
+					array('%duration%', '%period%'),
+					Text::timeDiff($wait,time()),
+					Trad::A_ERROR_CONNEXION_WAIT
+				));
+			}
+			else {
+				$page->addAlert(Trad::A_ERROR_CONNEXION);
+			}
 		}
 	}
 }
-elseif (isset($_POST['logout'])) {
-	logout();
-	$page->addAlert(Trad::A_LOGGED_OUT, 'alert-success');
+elseif (isset($_POST['logout']) && isset($_POST['token'])) {
+	if (tokenOk($_POST['token'])) {
+		logout();
+		$page->addAlert(Trad::A_LOGGED_OUT, 'alert-success');
+	}
+	else {
+		$page->addAlert(Trad::A_ERROR_TOKEN);
+	}
 }
 if (!isset($_SESSION['uid'])
 	|| empty($_SESSION['uid'])
@@ -390,7 +403,7 @@ if (canAccess('settings')) {
 		<link rel="apple-touch-icon" href="<?php echo Url::parse('apple-touch-icon.png'); ?>" />
 
 		<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,900" />
-		<link rel="stylesheet" href="<?php echo Url::parse('public/css/app2.min.css'); ?>" />
+		<link rel="stylesheet" href="<?php echo Url::parse('public/css/app.min.css'); ?>" />
 		<link rel="stylesheet" href="<?php echo Url::parse('public/css/highlighter.css'); ?>" />
 
 		<!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
@@ -456,6 +469,7 @@ if (canAccess('settings')) {
 						?>
 						<input type="text" name="username" placeholder="<?php echo Trad::F_USERNAME2; ?>" />
 						<input type="password" name="password" placeholder="<?php echo Trad::F_PASSWORD2; ?>" class="input-left" /><button type="submit" class="btn btn-right btn-small"><i class="icon-circle-arrow-right"></i></button>
+						<input type="hidden" name="token" value="<?php echo getToken(); ?>" />
 						<input type="hidden" name="login" value="1" />
 					</form>
 					<?php
@@ -464,8 +478,9 @@ if (canAccess('settings')) {
 					?>
 					<form method="post" class="form-log-out">
 						<p><?php echo str_replace('%user%', '<a href="'.Url::parse('users/'.intval($_SESSION['id'])).'">'.htmlspecialchars($_SESSION['username']).'</a>', Trad::S_WELCOME); ?></p>
+						<input type="hidden" name="token" value="<?php echo getToken(); ?>" />
 						<input type="hidden" name="logout" value="1" />
-						<button type="submit" class="btn"><i class="icon-off"></i></button>
+						<button type="submit" class="a-icon-hover"><i class="icon-white icon-off"></i></button>
 					</form>
 					<?php
 						}
