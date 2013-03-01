@@ -45,6 +45,25 @@ class OrderFilter {
 		}
 		return true;
 	}
+
+	public static function filter_user($a) {
+		if (in_array($a['openedby'], self::$filter)) { return true; }
+		foreach ($a['edits'] as $e) {
+			if (!empty($e) && in_array($e['by'], self::$filter)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public static function filter_status($a) {
+		foreach (self::$filter as $k => $v) {
+			if ($a['status'] != $k || $a['assignedto'] != $v) {
+				return false;
+			}
+		}
+		return true;
+	}
 }
 
 ?>

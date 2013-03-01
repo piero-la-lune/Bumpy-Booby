@@ -14,7 +14,7 @@ if (isset($_POST['edit_user'])) {
 }
 
 $user = $config['users'][$_GET['id']];
-$id = $_GET['id'];
+$id = intval($_GET['id']);
 
 $title = htmlspecialchars($user['username']);
 
@@ -68,6 +68,36 @@ if (($config['loggedin'] && $_SESSION['id'] == $id) || canAccess('settings')) {
 	';
 }
 
+$view_more = '';
+if (canAccess('issues')) {
+	foreach ($config['projects'] as $k => $v) {
+		if (canAccessProject($k)) {
+			$view_more .= '<div class="div-view-personnal-issues"><p>';
+			if (!onlyDefaultProject()) {
+				$view_more .= str_replace('%name%', $k, Trad::F_PROJECT_X)
+					.'<br />';
+			}
+			$view_more .= '<a href="'.Url::parse($k.'/issues',
+				array('user' => $id)).'">'
+				.Trad::S_VIEW_PARTICIPATION
+			.'</a><br />';
+			foreach ($config['statuses'] as $q => $w) {
+				if (strpos($w['name'], '%user%') !== false) {
+					$view_more .= '<a href="'.Url::parse($k.'/issues',
+						array('status' => $q.','.$id)).'">'
+						.str_replace(
+							'%status%',
+							Text::status($q, $id, false),
+							Trad::S_VIEW_STATUS
+						)
+					.'</a><br />';
+				}
+			}
+			$view_more .= '</p></div>';
+		}
+	}
+}
+
 $content .= '
 
 <form action="'.Url::parse('users/'.$id).'" method="post" class="form form-user">
@@ -77,6 +107,7 @@ $content .= '
 			'.$edit.'
 			<br /><small>'.$config['groups'][$user['group']].'</small>
 		</p>
+		'.$view_more.'
 	</div>
 	'.$edit_user.'
 </form>

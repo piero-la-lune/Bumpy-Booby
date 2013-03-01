@@ -263,6 +263,9 @@ footer {
 .div-preview-issue .a-summary:hover {
   color: #000000;
 }
+.div-preview-issue .closed {
+  text-decoration: line-through;
+}
 .div-preview-issue .grey {
   display: inline-block;
   padding-left: 8px;
@@ -546,6 +549,24 @@ footer {
 }
 .div-preview-project a:hover span {
   color: #000000;
+}
+.div-view-personnal-issues {
+  clear: both;
+  padding-top: 12px;
+  text-align: right;
+}
+.div-view-personnal-issues a {
+  color: #444444;
+  font-weight: 900;
+  font-style: italic;
+}
+.div-view-personnal-issues a:hover {
+  color: #000000;
+}
+.preview {
+  background: #fff;
+  padding: 6px;
+  margin-bottom: 6px;
 }
 .identicon {
   background: #fff2d6;
@@ -832,6 +853,14 @@ textarea {
   display: inline;
   width: auto;
 }
+.box-sort-filter a {
+  color: #444444;
+  font-weight: 900;
+  text-decoration: none;
+}
+.box-sort-filter a:hover {
+  text-decoration: underline;
+}
 p {
   margin: 0;
 }
@@ -930,16 +959,16 @@ a.label:hover {
 .box-sort-filter .btn-commented.unselected {
   background: transparent !important;
 }
+.box-sort-filter .btn-open.unselected:hover,
+.box-sort-filter .btn-closed.unselected:hover,
+.box-sort-filter .btn-status.unselected:hover,
+.box-sort-filter .btn-commented.unselected:hover {
+  text-decoration: underline;
+}
 .box-sort-filter .btn-open:hover,
 .box-sort-filter .btn-closed:hover,
 .box-sort-filter .btn-status:hover,
 .box-sort-filter .btn-commented:hover {
-  text-decoration: underline;
-}
-.box-sort-filter .btn-open.selected:hover,
-.box-sort-filter .btn-closed.selected:hover,
-.box-sort-filter .btn-status.selected:hover,
-.box-sort-filter .btn-commented.selected:hover {
   text-decoration: none;
 }
 a.btn-open,

@@ -95,6 +95,7 @@ class Issues {
 				Text::ago($issue['date'])
 			), Trad::S_ISSUE_CREATED);
 			$color = $config['statuses'][$issue['status']]['color'];
+			$class = ($issue['open']) ? 'a-summary' : 'a-summary closed';
 			$html .= '<div class="div-preview-issue">'
 				.'<div class="table">'
 					.'<div class="cell-left">'
@@ -104,7 +105,7 @@ class Issues {
 						.'</a>'
 					.'</div>'
 					.'<div class="cell-right">'
-						.'<a class="a-summary" href="'.$url.'">'
+						.'<a class="'.$class.'" href="'.$url.'">'
 							.htmlspecialchars($issue['summary'])
 						.'</a>'
 						.'<span class="grey">'

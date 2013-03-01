@@ -99,6 +99,9 @@ class Trad {
 	const S_NOTFOUND = 'La page que vous recherchez n\'existe pas...';
 	const S_FORBIDDEN = 'Vous n\'êtes pas autorisé à accèder à cette page. Merci de vous connecter pour continuer.';
 
+	const S_VIEW_PARTICIPATION = 'Voir ses participations';
+	const S_VIEW_STATUS = 'Voir les demandes « %status% ».';
+
 	const S_ISSUE_CREATED = 'par %user% %time%';
 	const S_ISSUE_UPDATED = '%adj% par %user% %time%.';
 	const S_ISSUE_STATUS_UPDATED = 'Statut changé à %status% par %user% %time%.';
@@ -246,6 +249,7 @@ Ceci est un message automatisé. Merci de ne pas y répondre.
 	const F_FILTER_STATUSES = 'Filtrer les statuts :';
 	const F_FILTER_STATES = 'Filtrer les états :';
 	const F_FILTER_LABELS = 'Filtrer les labels :';
+	const F_FILTER_USERS = 'Filtrer les utilisateurs :';
 
 	const F_WRITE = 'Écrire :';
 	const F_SUMMARY = 'Résumé';

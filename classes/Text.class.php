@@ -307,7 +307,7 @@ class Text {
 			if (preg_match('/%([a-z]+)%/', $v, $matches)) {
 				$data = ' data-match="'.$matches[1].'"';
 			}
-			$v = preg_replace('/%[a-z]+%/', '', $v);
+			$v = preg_replace('/%[a-z]+%/', Trad::W_SUSPENSION, $v);
 			$ret .= '<option value="'.$k.'"'.$data;
 			if ($k == $sel) { $ret .= ' selected'; }
 			$ret .= '>'.$v.'</option>';

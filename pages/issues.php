@@ -7,6 +7,12 @@ if (isset($_POST['action']) && $_POST['action'] = 'sort-filter') {
 	if (isset($_GET['label'])) {
 		$url = new Url(getProject().'/labels/'.$_GET['label']);
 	}
+	if (isset($_POST['user'])) {
+		$url->addParam('user', $_POST['user']);
+	}
+	if (isset($_POST['status'])) {
+		$url->addParam('status', $_POST['status']);
+	}
 	if (isset($_POST['sort'])) {
 		$url->addParam('sort', $_POST['sort']);
 	}
@@ -29,85 +35,108 @@ $title = Trad::T_BROWSE_ISSUES;
 
 $a = $issues->getAll();
 
-$sortOrFilter = false;
 $error404 = false;
 $url = new Url(getProject().'/issues');
 
+$label = NULL;
 if (isset($_GET['label'])) {
-	if (!isset($config['labels'][$_GET['label']])) {
-		$error404 = true;
-	}
-	else {
+	if (isset($config['labels'][$_GET['label']])) {
 		OrderFilter::$filter = array($_GET['label']);
 		$a = array_filter($a, array('OrderFilter', 'filter_label'));
-		if (!isset($_GET['open'])) { $_GET['open'] = "all"; }
 		$url = new Url(getProject().'/labels/'.$_GET['label']);
-	}
-}
-if (isset($_GET['open'])) {
-	if ($_GET['open'] == 'closed') {
-		$filter_open = array(false);
-		OrderFilter::$filter = array(false);
-		$a = array_filter($a, array('OrderFilter', 'filter_open'));
-	}
-	else if ($_GET['open'] == 'open') {
-		$filter_open = array(true);
-		OrderFilter::$filter = array(true);
-		$a = array_filter($a, array('OrderFilter', 'filter_open'));
+		$label = $config['labels'][$_GET['label']];
 	}
 	else {
-		$filter_open = array();
+		$error404 = true;
 	}
-	$sortOrFilter = true;
+}
+
+$user = NULL;
+if (isset($_GET['user'])) {
+	$id = intval($_GET['user']);
+	if (isset($config['users'][$id])) {
+		OrderFilter::$filter = array($id);
+		$a = array_filter($a, array('OrderFilter', 'filter_user'));
+		$url->addParam('user', $id);
+		$user = $config['users'][$id];
+	}
+	else {
+		$error404 = true;
+	}
+}
+
+$status = NULL;
+if (isset($_GET['status'])) {
+	$p = explode(',', $_GET['status']);
+	if (count($p) == 2
+		&& isset($config['statuses'][$p[0]])
+		&& isset($config['users'][$p[1]])
+	) {
+		OrderFilter::$filter = array($p[0] => $p[1]);
+		$a = array_filter($a, array('OrderFilter', 'filter_status'));
+		$url->addParam('status', implode(',', $p));
+		$status = array($p[0] => $p[1]);
+	}
+	else {
+		$error404 = true;
+	}
+}
+
+$open = 'open';
+if (isset($_GET['open'])) {
+	if ($_GET['open'] == 'closed') {
+		OrderFilter::$filter = array(false);
+		$a = array_filter($a, array('OrderFilter', 'filter_open'));
+		$url->addParam('open', 'closed');
+		$open = 'closed';
+	}
+	elseif ($_GET['open'] == 'open') {
+		OrderFilter::$filter = array(true);
+		$a = array_filter($a, array('OrderFilter', 'filter_open'));
+		$url->addParam('open', 'open');
+		$open = 'open';
+	}
+	else {
+		$url->addParam('open', 'all');
+		$open = 'all';
+	}
 }
 else {
-	$filter_open = array(true);
 	OrderFilter::$filter = array(true);
 	$a = array_filter($a, array('OrderFilter', 'filter_open'));
 }
-if (isset($_GET['statuses'])) {
-	$statuses = explode(",", $_GET['statuses']);
-	$filter_statuses = array();
-	foreach ($statuses as $s) {
+
+$statuses = array_keys($config['statuses']);
+if (isset($_GET['statuses']) && !empty($_GET['statuses'])) {
+	$statuses = array();
+	$st = explode(",", $_GET['statuses']);
+	foreach ($st as $s) {
 		if (isset($config['statuses'][$s])) {
-			$filter_statuses[] = $s;
+			$statuses[] = $s;
 		}
 	}
-	OrderFilter::$filter = $filter_statuses;
+	OrderFilter::$filter = $statuses;
 	$a = array_filter($a, array('OrderFilter', 'filter_statuses'));
-	$sortOrFilter = true;
+	$url->addParam('statuses', implode(',', $statuses));
 }
-else {
-	$filter_statuses = array_keys($config['statuses']);
-}
+
+$sort = array(0 => 'id', 1 => 'desc');
 if (isset($_GET['sort'])
 	&& method_exists('OrderFilter', 'order_'.$_GET['sort'])
 ) {
-	$sort = $_GET['sort'];
-	$sortOrFilter = true;
+	$url->addParam('sort', $_GET['sort']);
+	$sort = explode('_', $_GET['sort']);
 }
-else {
-	$sort = 'id_desc';
-}
-uasort($a, array('OrderFilter', 'order_'.$sort));
-$arr_sort = explode('_', $sort);
+uasort($a, array('OrderFilter', 'order_'.implode('_', $sort)));
 
-if ($sortOrFilter) {
-	if (in_array(true, $filter_open)) { $open = 'open'; }
-	else if (in_array(false, $filter_open)) { $open = 'closed'; }
-	else { $open = 'all'; }
-	$url->addParam('sort', $sort);
-	$url->addParam('statuses', implode(',', $filter_statuses));
-	$url->addParam('open', $open);
-}
-$pager = new Pager();
+$perpage = $config['issues_per_page'];
 if (isset($_GET['perpage'])) {
 	$perpage = intval($_GET['perpage']);
+	if ($perpage <= 1) { $perpage = $config['issues_per_page']; }
 	$url->addParam('perpage', $perpage);
 }
-else {
-	$perpage = $config['issues_per_page'];
-}
+
+$pager = new Pager();
 $html = $pager->get(
 	$a,
 	$url,
@@ -141,10 +170,10 @@ $content .= '
 	<div class="div-table-issues">
 		<div class="div-issues">'.$html.'</div>';
 
-$open_selected = (empty($filter_open) || in_array(true, $filter_open)) ?
+$open_selected = ($open != 'closed') ?
 	'btn-open selected':
 	'btn-open unselected';
-$closed_selected = (empty($filter_open) || in_array(false, $filter_open)) ?
+$closed_selected = ($open != 'open') ?
 	'btn-closed selected':
 	'btn-closed unselected';
 
@@ -153,8 +182,7 @@ $content .= '<div class="div-filter-issues">'
 		.'<div class="box box-sort-filter">'
 			.'<div class="inner-form">'
 				.'<form action="'.$url->getBase().'" method="post">';
-if (isset($_GET['label'])) {
-	$label = $config['labels'][$_GET['label']];
+if ($label) {
 	$content .= '<p>'
 					.Trad::F_FILTER_LABELS
 					.'<a href="javascript:;" class="label" style="'
@@ -162,6 +190,15 @@ if (isset($_GET['label'])) {
 						.$label['name']
 					.'</a>'
 				.'</p>';
+}
+if ($user) {
+	$content .= '<p>'
+					.Trad::F_FILTER_USERS
+					.'&nbsp;<a href="javascript:;">'
+						.htmlspecialchars($user['username'])
+					.'</a>'
+				.'</p>'
+				.'<input type="hidden" name="user" value="'.$user['id'].'" />';
 }
 $content .= 	'<p>'
 					.Trad::F_FILTER_STATES
@@ -173,14 +210,29 @@ $content .= 	'<p>'
 				.'</p>'
 				.'<p>'
 					.Trad::F_FILTER_STATUSES;
-foreach ($config['statuses'] as $k => $v) {
-	$selected = (in_array($k, $filter_statuses)) ?
-		'btn-status selected':
-		'btn-status unselected';
-	$content .= '<a href="javascript:;" class="'.$selected.'" style="'
-				.'background-color:'.$v['color'].'" data-id="'.$k.'" >'
-					.Text::status($k, NULL, false, false)
-				.'</a>';
+if ($status) {
+	$val = array();
+	foreach ($status as $k => $v) {
+		$s = $config['statuses'][$k];
+		$content .= '<a href="javascript:;" class="btn-status disabled" style="'
+					.'background-color:'.$s['color'].'" data-id="'.$k.'" >'
+						.Text::status($k, $v, false)
+					.'</a>';
+		$val[] = $k.','.$v;
+	}
+	$content .= '<input type="hidden" name="status" value="'
+		.implode(',', $val).'" />';
+}
+else {
+	foreach ($config['statuses'] as $k => $v) {
+		$selected = (in_array($k, $statuses)) ?
+			'btn-status selected':
+			'btn-status unselected';
+		$content .= '<a href="javascript:;" class="'.$selected.'" style="'
+					.'background-color:'.$v['color'].'" data-id="'.$k.'" >'
+						.Text::status($k, NULL, false, false)
+					.'</a>';
+	}
 }
 $content .= 	'</p>'
 				.'<p>'
@@ -189,13 +241,13 @@ $content .= 	'</p>'
 						.Text::options(array(
 							'id' => Trad::F_SORT_ID,
 							'mod' => Trad::F_SORT_MOD
-						), $arr_sort[0])
+						), $sort[0])
 					.'</select>'
 					.'<select>'
 						.Text::options(array(
 							'desc' => Trad::F_SORT_DESC,
 							'asc' => Trad::F_SORT_ASC
-						), $arr_sort[1])
+						), $sort[1])
 					.'</select>'
 				.'</p>'
 				.'<p>'

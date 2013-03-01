@@ -50,8 +50,8 @@ function update_position(scrollto) {
 			var pie = $(this);
 			if (!pie.get(0).getContext) { return true; }
 			var ctx = pie.get(0).getContext("2d"),
-				pie_width = parseInt(pie.width()),
-				pie_height = parseInt(pie.height()),
+				pie_width = parseInt(pie.attr("width")),
+				pie_height = parseInt(pie.attr("height")),
 				pie_radius = pie_height/2-12,
 				pie_radius2 = pie_radius/2,
 				pie_hover = false,
@@ -132,7 +132,7 @@ function update_position(scrollto) {
 							pie_radius-pie_radius2-2,
 							false
 						);
-						ctx.font = "32px 900 "+$("body").css("font-family");
+						ctx.font = "900 32px "+$("body").css("font-family");
 						ctx.fillStyle = "#fff";
 						ctx.textAlign = "center";
 						ctx.textBaseline = "middle";
@@ -258,7 +258,7 @@ $(document).ready(function(){
 	$(".box-sort-filter .btn-open,\
 		.box-sort-filter .btn-closed,\
 		.box-sort-filter .btn-status"
-	).click(function() {
+	).not(".disabled").click(function() {
 		$(this).toggleClass("selected").toggleClass("unselected");
 	});
 

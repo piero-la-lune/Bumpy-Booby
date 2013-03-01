@@ -99,6 +99,9 @@ class Trad {
 	const S_NOTFOUND = 'The page you\'re looking for does not exist anymore...';
 	const S_FORBIDDEN = 'You are not allowed to access this page. Please log in/out to continue.';
 
+	const S_VIEW_PARTICIPATION = 'View his participation.';
+	const S_VIEW_STATUS = 'View issues “%status%”.';
+
 	const S_ISSUE_CREATED = 'by %user% %time%';
 	const S_ISSUE_UPDATED = '%adj% by %user% %time%.';
 	const S_ISSUE_STATUS_UPDATED = 'Status updated to %status% by %user% %time%.';
@@ -246,6 +249,7 @@ This is an automated email, please do not reply.
 	const F_FILTER_STATUSES = 'Filter statuses:';
 	const F_FILTER_STATES = 'Filter states:';
 	const F_FILTER_LABELS = 'Filter labels:';
+	const F_FILTER_USERS = 'Filter users:';
 
 	const F_WRITE = 'Write:';
 	const F_SUMMARY = 'Summary';

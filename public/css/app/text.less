@@ -70,9 +70,11 @@ a.label, a.label:hover {
 	padding: 1px 3px;
 	margin: 2px;
 	.top & { margin: 0; }
-	.box-sort-filter &.unselected { background: transparent !important; }
-	.box-sort-filter &:hover { text-decoration: underline; }
-	.box-sort-filter &.selected:hover { text-decoration: none; }
+	.box-sort-filter &.unselected {
+		background: transparent !important;
+		&:hover { text-decoration: underline; }
+	}
+	.box-sort-filter &:hover { text-decoration: none; }
 }
 a.btn-open, a.btn-closed, a.btn-commented { color: @text-black; }
 a.btn-status { color: #fff; }
