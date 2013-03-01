@@ -13,16 +13,27 @@ input, textarea { -webkit-appearance: none; }
 	}
 }
 
-.main-right input {
-	.box-sizing(border-box);
-	width: 100%;
-	margin: 2px 0 2px 0;
-	padding: 8px;
-	border: none;
-	text-align: center;
-	background: lighten(@bgd-blue, 40%);
-	.transition(background .4s ease-in-out);
-	&:focus { background-color: #fff; }
+.main-right {
+	input {
+		width: @width-aside - 24px - 16px;
+		margin: 2px 0 2px 0;
+		padding: 8px;
+		border: none;
+		text-align: center;
+		background: lighten(@bgd-blue, 40%);
+		.transition(background .4s ease-in-out);
+		&:focus { background-color: #fff; }
+		&.input-left {
+			width: @width-aside - 24px - 16px - 26px;
+		}
+	}
+	button {
+		background: none;
+		border: none;
+		cursor: pointer;
+		padding: 0;
+		margin: 0 2px;
+	}
 }
 
 .main-left {

@@ -84,10 +84,6 @@ header .nav-bar {
   margin-bottom: 8px;
   border-bottom: 1px solid #a5bed3;
 }
-.main-right-inner .form-search button,
-.main-right-inner .form-log-in button {
-  display: none;
-}
 .main-right-inner .form-log-in a {
   display: block;
   text-align: center;
@@ -101,11 +97,6 @@ header .nav-bar {
 }
 .main-right-inner .form-log-out a {
   font-weight: 900;
-}
-.main-right-inner .form-log-out button {
-  background: none;
-  border: none;
-  cursor: pointer;
 }
 .main-right-inner .div-labels {
   text-align: center;
@@ -598,10 +589,7 @@ textarea {
   margin: 3px 2px;
 }
 .main-right input {
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
-  width: 100%;
+  width: 220px;
   margin: 2px 0 2px 0;
   padding: 8px;
   border: none;
@@ -614,6 +602,16 @@ textarea {
 }
 .main-right input:focus {
   background-color: #fff;
+}
+.main-right input.input-left {
+  width: 194px;
+}
+.main-right button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  margin: 0 2px;
 }
 .main-left .btn {
   border: none;

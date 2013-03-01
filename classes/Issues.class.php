@@ -206,6 +206,8 @@ class Issues {
 			|| !isset($post['issue_text'])
 			|| !isset($post['uploads'])
 			|| !isset($post['token'])
+			|| empty($post['issue_summary'])
+			|| empty($post['issue_text'])
 		) { return Trad::A_ERROR_FORM; }
 		if (canAccess('update_issue')
 			&& (!isset($post['issue_status'])

@@ -453,13 +453,14 @@ if (canAccess('settings')) {
 					?>
 					<form action="<?php echo Url::parse(getProject().'/search'); ?>" method="post" class="form-search">
 						<input type="hidden" name="action" value="search" />
-						<input type="text" name="q" value="<?php echo (isset($_GET['q'])) ? htmlspecialchars($_GET['q']) : ''; ?>" placeholder="<?php echo Trad::S_SEARCH; ?>" class="input-left" /><button type="submit" class="btn btn-right btn-small"><i class="icon-search"></i></button>
+						<input type="text" name="q" value="<?php echo (isset($_GET['q'])) ? htmlspecialchars($_GET['q']) : ''; ?>" placeholder="<?php echo Trad::S_SEARCH; ?>" class="input-left" />
+						<button type="submit" class="a-icon-hover"><i class="icon-white icon-search"></i></button>
 					</form>
 					<?php
 						}
 						if (!$config['loggedin']) {
 					?>
-					<form method="post" class="form-log-in">
+					<form action="" method="post" class="form-log-in">
 						<?php
 							if (canAccess('signup')) {
 						?>
@@ -468,7 +469,8 @@ if (canAccess('settings')) {
 							}
 						?>
 						<input type="text" name="username" placeholder="<?php echo Trad::F_USERNAME2; ?>" />
-						<input type="password" name="password" placeholder="<?php echo Trad::F_PASSWORD2; ?>" class="input-left" /><button type="submit" class="btn btn-right btn-small"><i class="icon-circle-arrow-right"></i></button>
+						<input type="password" name="password" placeholder="<?php echo Trad::F_PASSWORD2; ?>" class="input-left" />
+						<button type="submit" class="a-icon-hover"><i class="icon-white icon-circle-arrow-right"></i></button>
 						<input type="hidden" name="token" value="<?php echo getToken(); ?>" />
 						<input type="hidden" name="login" value="1" />
 					</form>
