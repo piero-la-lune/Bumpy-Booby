@@ -491,7 +491,7 @@ class Issues {
 		if (!canAccess('post_comment')
 			|| !isset($post['comment'])
 			|| empty($post['comment'])
-			|| !isset($post['comment_uploads'])
+			|| !isset($post['uploads'])
 			|| !isset($post['token'])
 			|| !$this->exists($id)
 			|| !$this->issues[$id]['open']

@@ -634,27 +634,27 @@ class Settings {
 			'statuses' => array(
 				'default' => array(
 					'name' => Trad::W_S_NEW,
-					'color' => '#A4CBFF',
+					'color' => '#427693',
 					'dashboard' => true
 				),
 				'confirmed' => array(
 					'name' => Trad::W_S_CONFIRMED,
-					'color' => '#F3A4FF',
+					'color' => '#E77661',
 					'dashboard' => true
 				),
 				'assigned' => array(
 					'name' => Trad::W_S_ASSIGNED,
-					'color' => '#FFE6A4',
+					'color' => '#6B4A9D',
 					'dashboard' => false
 				),
 				'resolved' => array(
 					'name' => Trad::W_S_RESOLVED,
-					'color' => '#C0FFA4',
+					'color' => '#7FB63F',
 					'dashboard' => true
 				),
 				'rejected' => array(
 					'name' => Trad::W_S_REJECTED,
-					'color' => '#FFA4A4',
+					'color' => '#C75480',
 					'dashboard' => false
 				)
 			),
@@ -663,16 +663,16 @@ class Settings {
 					'name' => Trad::W_L_URGENT,
 					'color' => '#B94A48'
 				),
-				'feature' => array(
+				'improvement' => array(
 					'name' => Trad::W_L_IMPROVEMENT,
-					'color' => '#3A87AD'
+					'color' => '#355479'
 				),
 				'private' => array(
 					'name' => Trad::W_L_PRIVATE,
 					'color' => '#F89406'
 				)
 			),
-			'colors' => array('#999999','#666666','#333333','#468847','#73E33E','#C3FA35','#C0FFA4','#FFE6A4','#FFE500','#FFD547','#F89406','#835E17','#B94A48','#C58574','#F3A4FF','#A4CBFF','#35BAC0','#3A87AD','#2F7965','#355479','#963A6C','#E40068','#FFA4A4'),
+			'colors' => array('#999999', '#666666', '#333333', '#468847', '#7FB63F', '#73E33E', '#C3FA35', '#C0FFA4', '#FFE6A4', '#FFE500', '#FFD547', '#F89406', '#835E17', '#B94A48', '#E77661', '#C58574', '#F3A4FF', '#A4CBFF', '#35BAC0', '#427693', '#2F7965', '#355479', '#6B4A9D', '#963A6C', '#C75480', '#FFA4A4', '#E40068'),
 			'users' => array(),
 			'salt' => Text::randomKey(40),
 			'version' => VERSION,
