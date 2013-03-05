@@ -1,5 +1,28 @@
 <?php
 
+# Bumpy Booby
+# Copyright (c) 2013 Pierre Monchalin
+# <http://bumpy-booby.derivoile.fr>
+# 
+# Permission is hereby granted, free of charge, to any person obtaining
+# a copy of this software and associated documentation files (the
+# "Software"), to deal in the Software without restriction, including
+# without limitation the rights to use, copy, modify, merge, publish,
+# distribute, sublicense, and/or sell copies of the Software, and to
+# permit persons to whom the Software is furnished to do so, subject to
+# the following conditions:
+# 
+# The above copyright notice and this permission notice shall be
+# included in all copies or substantial portions of the Software.
+# 
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+# EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+# MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+# NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+# LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+# OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+# WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
 ### Load classes
 function loadclass($classe) { require './classes/'.$classe.'.class.php'; }
 spl_autoload_register('loadClass');
@@ -444,7 +467,7 @@ if (canAccess('settings')) {
 		<div class="main">
 
 			<aside class="main-right">
-				<div class="main-right-open div-affix">Menu</div>
+				<div class="main-right-open div-affix"><?php echo Trad::W_MENU; ?></div>
 				<div class="main-right-inner div-affix">
 					<nav>
 						<ul>
@@ -461,6 +484,21 @@ if (canAccess('settings')) {
 					</form>
 					<?php
 						}
+					?>
+					<div class="div-labels">
+					<?php
+						if (getProject()) {
+							foreach ($config['labels'] as $k => $v) {
+								if ($k != PRIVATE_LABEL
+									|| canAccess('private_issues')
+								) {
+									echo '<a href="'.Url::parse(getProject().'/labels/'.$k).'" class="label" style="background-color:'.$v['color'].'">'.$v['name'].'</a>';
+								}
+							}
+						}
+					?>
+					</div>
+					<?php
 						if (!$config['loggedin']) {
 					?>
 					<form action="" method="post" class="form-log-in">
@@ -489,20 +527,16 @@ if (canAccess('settings')) {
 					</form>
 					<?php
 						}
-						if (getProject()) {
 					?>
-					<div class="div-labels">
-					<?php
-						foreach ($config['labels'] as $k => $v) {
-							if ($k == PRIVATE_LABEL && !canAccess('private_issues')) { continue; }
-							echo '<a href="'.Url::parse(getProject().'/labels/'.$k).'" class="label" style="background-color:'.$v['color'].'">'.$v['name'].'</a>';
-						}
-
-					?>
+					<div class="div-copyright">
+						<?php
+							echo str_replace(
+								'%name%',
+								'<a href="'.URL.'">'.NAME.' '.VERSION.'</a>',
+								Trad::S_COPYRIGHT
+							);
+						?>
 					</div>
-					<?php
-						}
-					?>
 				</div>
 			</aside>
 
@@ -512,14 +546,8 @@ if (canAccess('settings')) {
 
 		</div>
 
-		<footer>
-			<div class="footer-inner">
-				<p><?php echo str_replace('%name%', '<a href="'.URL.'">'.NAME.'</a>', Trad::S_COPYRIGHT); ?></p>
-			</div>
-		</footer>
-
 		<script src="<?php echo Url::parse('public/js/highlighter.js'); ?>"></script>
-		<script src="<?php echo Url::parse('public/js/jquery-1.8.1.min.js'); ?>"></script>
+		<script src="<?php echo Url::parse('public/js/jquery-1.9.1.min.js'); ?>"></script>
 		<script>
 			var ajax = "<?php echo Url::parse('public/ajax'); ?>",
 				token = "<?php echo getToken(); ?>",

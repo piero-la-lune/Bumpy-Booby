@@ -16,6 +16,7 @@ class Trad {
 	const W_DISABLED = 'Disabled';
 	const W_NOTFOUND = 'Not found';
 	const W_FORBIDDEN = 'Forbidden';
+	const W_MENU = 'Menu';
 
 	const W_EXAMPLE = 'Example';
 	const W_HEX = 'Hex';
@@ -119,7 +120,7 @@ class Trad {
 	const S_NO_PROJECT = 'No project.';
 
 	const S_SEARCH = '#12, @user, words…';
-	const S_COPYRIGHT = '%name% is an open source project, created by Pierre Monchalin.';
+	const S_COPYRIGHT = 'Powered by %name%.';
 
 		# Alerts
 

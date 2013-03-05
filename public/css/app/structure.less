@@ -128,7 +128,7 @@ header {
 			}
 		}
 	}
-	.form-log-in, .form-log-out, .div-labels {
+	.form-log-in, .form-log-out, .div-copyright {
 		padding-top: 8px;
 		margin-top: 8px;
 		border-top: 1px solid lighten(@bgd-blue, 20%);
@@ -151,10 +151,15 @@ header {
 	}
 	.div-labels {
 		text-align: center;
-		.label {
-			border: 1px solid lighten(@bgd-blue, 20%);
-			&:hover { border-color: lighten(@bgd-blue, 40%); }
-		}
+		margin-top: 8px;
+	}
+	.div-copyright {
+		color: lighten(@bgd-blue, 40%);
+		font-size: 0.8em;
+		font-style: italic;
+		text-align: center;
+		a { text-decoration: underline; }
+		a:hover { text-decoration: none; }
 	}
 }
 .main-left {

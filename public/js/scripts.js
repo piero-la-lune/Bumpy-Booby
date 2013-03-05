@@ -186,7 +186,7 @@ $(document).ready(function(){
 	$(".pie-statuses").pie();
 
 // Markdown preview
-	$(".btn-preview").live("click", function() {
+	$(document).on("click", ".btn-preview", function() {
 		var btn = $(this),
 			form = $(this).closest("form");
 		$.ajax({
@@ -217,7 +217,7 @@ $(document).ready(function(){
 		});
 		return false;
 	});
-	$(".btn-edit").live("click", function() {
+	$(document).on("click", ".btn-edit", function() {
 		$(this)
 			.removeClass("btn-edit")
 			.addClass("btn-preview")
@@ -305,7 +305,7 @@ $(document).ready(function(){
 	$(".a-remove-issue").click(function() {
 		if (confirm(confirm_delete_issue)) {
 			$(this).closest("form")
-				.find("input[name=\"action\"]").attr("name", "delete_issue").end()
+				.find("input[name=\"action\"]").attr("name", "delete_issue").end();
 				.submit();
 		}
 	});
@@ -355,7 +355,7 @@ $(document).ready(function(){
 				.find(".btn-upload").append("<input type=\"file\" name=\"upload\" />");
 			update_position(true);
 		}
-		form.find("input[name=\"upload\"]").live("change", function() {
+		form.on("change", "input[name=\"upload\"]", function() {
 			var file = $(this)[0].files;
 
 			if (typeof file != "undefined" && window.XMLHttpRequestUpload && window.FormData) {
@@ -388,7 +388,7 @@ $(document).ready(function(){
 					.find("span").toggle().end()
 					.find("i").toggle();
 		});
-		form.find(".icon-trash").live("click", function() {
+		form.on("click", ".icon-trash", function() {
 			var div = $(this).closest("div");
 			$.ajax({
 				type: "POST",

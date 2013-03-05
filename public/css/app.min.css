@@ -152,7 +152,7 @@ header .header-inner {
 }
 .main-right-inner .form-log-in,
 .main-right-inner .form-log-out,
-.main-right-inner .div-labels {
+.main-right-inner .div-copyright {
   padding-top: 8px;
   margin-top: 8px;
   border-top: 1px solid #a5bed3;
@@ -173,12 +173,19 @@ header .header-inner {
 }
 .main-right-inner .div-labels {
   text-align: center;
+  margin-top: 8px;
 }
-.main-right-inner .div-labels .label {
-  border: 1px solid #a5bed3;
+.main-right-inner .div-copyright {
+  color: #eaf0f4;
+  font-size: 0.8em;
+  font-style: italic;
+  text-align: center;
 }
-.main-right-inner .div-labels .label:hover {
-  border-color: #eaf0f4;
+.main-right-inner .div-copyright a {
+  text-decoration: underline;
+}
+.main-right-inner .div-copyright a:hover {
+  text-decoration: none;
 }
 .main-left {
   padding: 0 12px 12px 12px;
