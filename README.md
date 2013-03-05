@@ -29,10 +29,12 @@ To get more information or to see it in action:
 
 Copy all files, run `./` or `./index.php`, configure Bumpy Booby and enjoy !
 
+Note : you can delete folder "./public/css/app/", it is useless.
+
 ### Backup
 
 Before any update, it's highly recommended to make a backup. You only need to
-save folder `./database`.
+save folder `./database/`.
 
 ### Requirements
 

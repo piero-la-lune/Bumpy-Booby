@@ -180,12 +180,12 @@ class Settings {
 					# to rename the folder, in case another project need it
 					$new = Text::randomKey(8);
 					$folder = str_replace('%name%', $new, FOLDER_PROJECT);
-					rename($folder_old, DIR_DATABASE.$folder);
+					rename(DIR_DATABASE.$folder_old, DIR_DATABASE.$folder);
 					$loop[$new] = $v; # Try next time
 				}
 				else {
 					# We can rename the folder without overwriting a project
-					rename($folder_old, $folder_new);
+					rename(DIR_DATABASE.$folder_old, DIR_DATABASE.$folder_new);
 				}
 			}
 			$to_be_renamed = $loop;

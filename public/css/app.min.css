@@ -408,12 +408,6 @@ footer {
   border-left: 6px solid #ffcb83;
   padding: 12px;
 }
-.box .inner p {
-  margin-top: 8px;
-}
-.box .inner p:first-child {
-  margin-top: 0;
-}
 .box .inner-form {
   background: #ffcb83;
   padding: 12px;
@@ -993,6 +987,15 @@ a {
 }
 .text-container a:hover {
   text-decoration: underline;
+}
+.text-container p {
+  margin-top: 8px;
+}
+.text-container p:first-child {
+  margin-top: 0;
+}
+.text-container img {
+  max-width: 100%;
 }
 .text-container blockquote {
   background: #f9fbfd;

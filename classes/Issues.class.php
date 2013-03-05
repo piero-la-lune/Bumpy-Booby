@@ -448,6 +448,14 @@ class Issues {
 			if (!array_key_exists($i['status'], $statuses)) {
 				$this->issues[$k]['status'] = DEFAULT_STATUS;
 			}
+			foreach ($i['edits'] as $l => $e) {
+				if (!empty($e)
+					&& $e['type'] == 'status'
+					&& !array_key_exists($e['changedto'], $statuses)
+				) {
+					$this->issues[$k]['edits'][$l] = array();
+				}
+			}
 		}
 		$this->save();
 	}

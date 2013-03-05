@@ -305,7 +305,7 @@ $(document).ready(function(){
 	$(".a-remove-issue").click(function() {
 		if (confirm(confirm_delete_issue)) {
 			$(this).closest("form")
-				.find("input[name=\"action\"]").attr("name", "delete_issue").end();
+				.find("input[name=\"action\"]").attr("name", "delete_issue").end()
 				.submit();
 		}
 	});

@@ -609,13 +609,13 @@ $content = '
 $javascript = '
 
 $(document).ready(function(){
-	$(".color").live("keyup", function() {
+	$(document).on("keyup", ".color", function() {
 		$(this).closest("tr").find(".label").css("background-color", $(this).val());
 	});
-	$(".btn-color").live("click", function() {
+	$(document).on("click", ".btn-color", function() {
 		$(this).closest("tr").find(".div-pick-color").show();
 	});
-	$(".div-pick-color .square").live("click", function() {
+	$(document).on("click", ".div-pick-color .square", function() {
 		var color = $(this).css("background-color");
 		$(this).closest("tr")
 			.find(".div-pick-color").hide().end()
@@ -632,10 +632,10 @@ $(document).ready(function(){
 		}
 		$(this).toggleClass("active");
 	});
-	$("input[name=\"label_name[]\"]").live("keyup", function() {
+	$(document).on("keyup", "input[name=\"label_name[]\"]", function() {
 		$(this).closest("tr").find(".label").first().text($(this).val());
 	});
-	$(".div-pick-color .label").live("click", function() {
+	$(document).on("click", ".div-pick-color .label", function() {
 		var color = $(this).css("background-color");
 		$(this).closest("tr")
 			.find(".div-pick-color").hide().end()
@@ -685,20 +685,20 @@ $(document).ready(function(){
 				.find(".t-display").hide().end()
 				.find(".i-display").show();
 	});
-	$(".a-remove-project").live("click", function(e) {
+	$(document).on("click", ".a-remove-project", function() {
 		if (confirm("'.Trad::A_CONFIRM_DELETE_PROJECT.'")) {
 			$(this).closest("tr").remove();
 		}
 	});
-	$(".a-remove").live("click", function() {
+	$(document).on("click", ".a-remove", function() {
 		$(this).closest("tr").remove();
 	});
-	$(".a-up").live("click", function() {
+	$(document).on("click", ".a-up", function() {
 		var tr = $(this).closest("tr");
 		if (tr.prev().length <= 0) { return false; }
 		tr.replaceWith(tr.prev().after(tr.clone(true)));
 	});
-	$(".a-down").live("click", function() {
+	$(document).on("click", ".a-down", function() {
 		var tr = $(this).closest("tr");
 		if (tr.next().length <= 0) { return false; }
 		tr.replaceWith(tr.next().after(tr.clone(true)));
