@@ -7,7 +7,7 @@
 
 	$title = Trad::T_PROJECTS;
 	$content = '<h1>'.Trad::T_PROJECTS.'</h1>'
-		.'<div class="div-intro">'
+		.'<div class="div-intro text-container">'
 			.Text::markdown($config['intro'])
 		.'</div>';
 

@@ -15,11 +15,12 @@
 	background: @bgd-yellow;
 	padding: 8px;
 	width: 360px;
-	h3 {
+	h2 {
 		background: lighten(@bgd-yellow, 18%);
 		margin: 0;
 		padding: 4px;
 		text-align: center;
+		font-size: 1.2em;
 	}
 	p { margin-top: 12px; }
 }
@@ -46,14 +47,17 @@
 .pager {
 	margin: 20px 12px;
 	text-align: center;
+	line-height: 2em;
 	.current {
 		font-weight: 900;
 		margin: 0 8px;
+		white-space: nowrap;
 	}
 	.previous, .next {
 		padding: 8px;
 		background: @bgd-yellow;
 		color: @text-black;
+		white-space: nowrap;
 		&:hover { color: @text-black-hover; }
 	}
 	.next {

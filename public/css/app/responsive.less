@@ -1,0 +1,93 @@
+@media screen and (max-width: @max-width) {
+	header .header-inner {
+		padding-left: 0;
+	}
+}
+
+@media screen and (max-width: 1199px) {
+	.main-right {
+		width: 32px;
+		&.open {
+			.main-right-open { margin-left: @width-aside; }
+			.main-right-inner { display: block; }
+		}
+	}
+	.main-right-open {
+		display: block;
+		width: 32px - 12px;
+		position: absolute;
+	}
+	.main-right-inner {
+		display: none;
+		position: absolute;
+		z-index: 999;
+	}
+}
+
+@media screen and (max-width: 999px) {
+	.div-table-issues, .div-table-comments {
+		display: block;
+	}
+	.div-issues, .div-filter-issues, .div-comments, .div-post-comment {
+		display: block;
+		width: auto;
+		.div-affix {
+			position: static;
+			width: auto;
+			top: auto;
+		}
+	}
+	.div-post-comment, .div-filter-issues { 
+		padding-left: 0;
+	}
+}
+
+@media screen and (max-width: 799px) {
+	.main-right {
+		width: 0;
+		&.open {
+			.main-right-inner { display: block; }
+		}
+	}
+	.main-right-open {
+		display: none;
+	}
+	header .a-menu {
+		display: inline-block;
+	}
+	.div-table, .div-preview-projects {
+		display: block;
+	}
+	.div-cell {
+		display: block;
+		margin: 0 auto 32px auto;
+		width: auto;
+	}
+	.box .div-left, .box .div-right {
+		display: block;
+		width: auto;
+	}
+	.div-preview-project {
+		display: block;
+		width: auto;
+		a {
+			margin-left: 0;
+			margin-right: 0;
+		}
+	}
+}
+
+@media screen and (max-width: 499px) {
+	.div-preview-issue {
+		.a-id-issue { margin-right: 8px; }
+		&:hover .a-id-issue {
+			margin-right: 8px;
+			padding-right: 12px;
+		}
+	}
+	.box .inner-form, .form {
+		.help {
+			margin-left: 6px;
+		}
+	}
+}

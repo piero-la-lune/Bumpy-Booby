@@ -161,6 +161,8 @@ class Trad {
 	const A_PLEASE_LOGIN_ISSUE = 'Connectez-vous pour soumettre une demande. Pas encore inscrit ? Créez un compte : c\'est gratuit et ultra rapide !';
 	const A_SHOULD_LOGIN = 'Si vous possèdez déjà un compte, connectez-vous. Sinon, pensez à vous inscrire : c\'est gratuit et ultra rapide !';
 
+	const A_IE = 'Votre navigateur est obsolète : <a href="http://www.browserchoice.eu">effectuez une mise à niveau ou changez de navigateur</a>.';
+
 		# Mails
 
 	const M_NEW_COMMENT_O = '[%title% — %project% — Demande #%id%] Nouveau commentaire';

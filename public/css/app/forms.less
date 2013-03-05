@@ -15,7 +15,7 @@ input, textarea { -webkit-appearance: none; }
 
 .main-right {
 	input {
-		width: @width-aside - 24px - 16px;
+		width: @width-aside - 24px - 16px - 2px; // 2px because of Firefox
 		margin: 2px 0 2px 0;
 		padding: 8px;
 		border: none;
@@ -32,7 +32,7 @@ input, textarea { -webkit-appearance: none; }
 		border: none;
 		cursor: pointer;
 		padding: 0;
-		margin: 0 2px;
+		margin: 0;
 	}
 }
 
@@ -110,9 +110,14 @@ input, textarea { -webkit-appearance: none; }
 			background: #fff;
 		}
 	}
-	.btn-check { border-bottom: 1px solid @bgd-yellow; }
-	.btn-check.active { border-color: @text-black; background: #fff; }
-	table {
+	.btn-check {
+		font-weight: normal;
+	}
+	.btn-check.active {
+		font-weight: 900;
+		background: #fff;
+	}
+	.table {
 		border-collapse: collapse;
 		td {
 			border-top: 4px solid @text-black;

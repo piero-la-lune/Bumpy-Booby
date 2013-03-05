@@ -187,7 +187,7 @@ if (canAccess('post_comment') && $issue['open']) {
 		'.$form_pc_a.'
 		<form action="'.Url::parse(getProject().'/issues/'.$issue['id'], array(), 'post_comment').'" method="post" id="post_comment">
 			<textarea name="comment" rows="6" required>'.$form_pc_c.'</textarea>
-			<div class="preview" style="display:none"></div>
+			<div class="preview text-container" style="display:none"></div>
 			'.$message.'
 			<div class="form-actions">
 				<button type="button" class="btn btn-preview">'.Trad::V_PREVIEW.'</a>
@@ -362,7 +362,7 @@ $content = '
 <div class="box box-issue">
 	<div class="div-table">
 		<div class="inner div-left t-display" style="display:'.$displ_t.'">
-			'.Text::markdown($issue['text']).'
+			<div class="text-container">'.Text::markdown($issue['text']).'</div>
 			'.$uploads.'
 		</div>
 		'.$edit_issue.'

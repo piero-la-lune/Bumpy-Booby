@@ -407,7 +407,7 @@ $content = '
 			<i class="icon-chevron-down"></i>'.Trad::F_PROJECTS.'
 		</div>
 		<div class="inner-form" style="display:none">
-			<table>
+			<table class="table">
 				<tbody>
 					'.$t_projects.'
 				</tbody>
@@ -465,7 +465,7 @@ $content = '
 			<i class="icon-chevron-down"></i>'.Trad::F_COLORS.'
 		</div>
 		<div class="inner-form" style="display:none">
-			<table>
+			<table class="table">
 				<thead>
 					<tr>
 						<th>'.Trad::W_HEX.'</th>
@@ -494,7 +494,7 @@ $content = '
 		</div>
 		<div class="inner-form" style="display:none">
 			<p class="p-tip">'.Trad::F_TIP_ID_STATUS.'</p>
-			<table>
+			<table class="table">
 				<thead>
 					<tr>
 						<th>'.Trad::W_ID.'</th>
@@ -516,7 +516,7 @@ $content = '
 		</div>
 		<div class="inner-form" style="display:none">
 			<p class="p-tip">'.Trad::F_TIP_ID_LABEL.'</p>
-			<table>
+			<table class="table">
 				<thead>
 					<tr>
 						<th>'.Trad::W_ID.'</th>
@@ -545,7 +545,7 @@ $content = '
 		</div>
 		<div class="inner-form" style="display:none">
 			<p class="p-tip">'.Trad::F_TIP_ID_GROUP.'</p>
-			<table>
+			<table class="table">
 				<thead>
 					<tr>
 						<th>'.Trad::W_ID.'</th>
@@ -566,7 +566,7 @@ $content = '
 			<i class="icon-chevron-down"></i>'.Trad::F_PERMISSIONS.'
 		</div>
 		<div class="inner-form" style="display:none">
-			<table>
+			<table class="table">
 				<tbody>
 					'.$t_permissions.'
 				</tbody>

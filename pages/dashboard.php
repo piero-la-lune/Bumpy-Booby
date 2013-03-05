@@ -2,7 +2,7 @@
 
 $title = Trad::T_DASHBOARD;
 
-$intro = '<div class="div-intro">'
+$intro = '<div class="div-intro text-container">'
 	.Text::markdown($config['projects'][getProject()]['description'])
 	.'</div>';
 
@@ -117,7 +117,7 @@ if (canAccess('issues')) {
 			.$pie_html
 		.'</div>'
 		.'<div class="div-cell div-last-edits">'
-			.'<h3>'.Trad::T_LAST_UPDATES.'</h3>'
+			.'<h2>'.Trad::T_LAST_UPDATES.'</h2>'
 			.$edits
 		.'</div>'
 	.'</div>';

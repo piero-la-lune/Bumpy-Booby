@@ -34,12 +34,12 @@ class Pager {
 				.Trad::W_PREVIOUS
 			.'</a>';
 		}
-		$html .= '<span class="current">'
+		$html .= '&nbsp;<span class="current">'
 			.str_replace(
 				array('%nb1%', '%nb2%'),
 				array($page, $nbpages),
 				Trad::W_CURRENT)
-		.'</span>';
+		.'</span>&nbsp;';
 		if ($page < $nbpages) {
 			$url->addParam('pagen', $page+1);
 			$html .= '<a href="'.$url->get().'" class="next a-icon-hover">'

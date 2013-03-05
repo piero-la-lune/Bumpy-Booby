@@ -9,7 +9,7 @@
 @bgd-blue: #618DB1;
 @bgd-red: #FF7769;
 @bgd-yellow: #FFCB83;
-@bgd-grey: #E1EDF7;
+@bgd-grey: lighten(#E1EDF7, 2%);
 
 @green: #8DD69D;
 @red: #ED92AC;
@@ -20,9 +20,12 @@
 
 @width-aside: 260px;
 @width-about: 220px;
+@max-width: 1400px;
 
 
 @import "mixins.less";
+
+@import "fonts.less";
 
 @import "structure.less";
 @import "miscellaneous.less";

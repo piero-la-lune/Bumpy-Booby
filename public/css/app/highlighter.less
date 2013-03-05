@@ -1,14 +1,12 @@
 code {
-	background: #fff;
-	border: 1px solid #ddd;
-	.border-radius(3px);
+	background: lighten(@bgd-grey, 4%);
 	padding: 1px 4px;
 	font-size: 0.9em;
 }
 
 pre code {
 	display: block;
-	max-height: 320px;
+	max-height: 320px; .ie8 & { max-height: none; }
 	overflow: auto;
 	padding: 8px;
 	line-height: normal;
@@ -17,7 +15,7 @@ pre code {
 pre .td-nb {
 	text-align: right;
 	padding-right: 4px;
-	border-right: 1px solid #ddd;
+	border-right: 1px solid #ccc;
 	.user-select(none);
 }
 pre .td-code {

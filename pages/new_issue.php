@@ -104,7 +104,7 @@ $content = '<h1>'.Trad::T_NEW_ISSUE.'</h1>'
 				.'placeholder="'.Trad::F_CONTENT.'" required>'
 				.$form_t
 			.'</textarea>'
-			.'<div class="preview" style="display:none"></div>'
+			.'<div class="preview text-container" style="display:none"></div>'
 			.$should_login
 			.'<div class="form-actions">'
 				.'<button type="button" class="btn btn-preview">'

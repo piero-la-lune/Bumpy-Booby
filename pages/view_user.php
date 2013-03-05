@@ -143,7 +143,7 @@ if (canAccess('view_upload')) {
 	if (empty($up)) { $up = '<p>'.Trad::S_NO_UPLOAD.'</p>'; }
 	$content .= '
 		<div class="div-cell div-cell-left div-list-uploads">
-			<h3>'.Trad::T_UPLOADS.'</h3>
+			<h2>'.Trad::T_UPLOADS.'</h2>
 			'.$up.'
 			'.$space_used.'
 		</div>
@@ -214,7 +214,7 @@ if (canAccess('issues')) {
 
 	$content .= '
 <div class="div-cell div-last-edits">
-	<h3>'.Trad::T_LAST_ACTIVITY.'</h3>
+	<h2>'.Trad::T_LAST_ACTIVITY.'</h2>
 	'.$activities.'
 </div>
 	';

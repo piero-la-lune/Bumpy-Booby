@@ -2,7 +2,7 @@ p {
 	margin: 0;
 }
 
-h1, h2, h3, h4, h4, h6 {
+h1, h2, h3, h4, h5, h6 {
 	color: @title-black;
 	font-weight: 900;
 }
@@ -26,6 +26,17 @@ h1 {
 		}
 	}
 }
+h3 {
+	font-size: 1.6em;
+}
+h4 {
+	font-size: 1.2em;
+	font-style: italic;
+}
+h5 {
+	font-size: 0.9em;
+	font-style: italic;
+}
 
 a {
 	text-decoration: none;
@@ -33,6 +44,13 @@ a {
 .text-container a {
 	color: @link-red;
 	&:hover { text-decoration: underline; }
+}
+
+.text-container {
+	blockquote {
+		background: lighten(@bgd-grey, 4%);
+		padding: 6px 8px;
+	}
 }
 
 .found, .strong {
@@ -63,7 +81,7 @@ a.label, a.label:hover {
 
 .btn-open, .btn-closed, .btn-status, .btn-commented {
 	display: inline-block;
-	vertical-align: middle;
+	vertical-align: baseline;
 	font-size: 0.9em;
 	font-weight: 900;
 	white-space: nowrap;

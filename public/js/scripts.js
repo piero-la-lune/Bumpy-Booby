@@ -1,5 +1,9 @@
 
 function highlighter(e, f) {
+	if ($("html").hasClass("lt9")) {
+		// doesn't work with IE8 and below
+		return true;
+	}
 	hljs.highlightBlock(f);
 	var text = e.html().replace(/^\n+|\n+$/g, '');
 	if (e.hasClass("blank")) { e.html(text); }
@@ -14,6 +18,7 @@ function highlighter(e, f) {
 }
 
 function update_position(scrollto) {
+	if ($("html").hasClass("lt8")) { return true; }
 	$(".div-affix").each(function() {
 		var elm = $(this),
 			container = elm.parent(),
@@ -30,7 +35,7 @@ function update_position(scrollto) {
 					container.removeClass(classes);
 				}
 			}
-			return true;
+
 		}
 		else if (top + 12 <= offset.top) {
 			container.removeClass(classes);
@@ -169,6 +174,13 @@ $(document).ready(function(){
 	});
 	
 	$(".alert").click(function() { $(this).slideUp(); });
+
+	$(".main-right-open").click(function() {
+		$(".main-right").toggleClass("open");
+	});
+	$(".a-menu").click(function() {
+		$(".main-right").toggleClass("open");
+	});
 
 // Pie chart
 	$(".pie-statuses").pie();

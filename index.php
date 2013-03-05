@@ -17,6 +17,7 @@ define('LANGUAGES', 'en,fr'); # Separated by a comma
 define('DEFAULT_LANGUAGE', 'en'); # Used only during installation
 
 ### Directories and files
+define('DIR_CURRENT', dirname(__FILE__).'/');
 define('DIR_DATABASE', dirname(__FILE__).'/database/');
 define('DIR_LANGUAGES', dirname(__FILE__).'/languages/');
 define('FOLDER_PROJECT', 'project_%name%/');
@@ -61,6 +62,12 @@ else {
 		require DIR_LANGUAGES.'Trad_'.DEFAULT_LANGUAGE.'.class.php';
 	}
 	$config = Settings::get_default_config(DEFAULT_LANGUAGE);
+}
+
+### Upgrade
+if ($config['version'] != VERSION) {
+	require DIR_CURRENT.'upgrade.php';
+	exit;
 }
 
 ### Manage sessions
@@ -388,9 +395,9 @@ if (canAccess('settings')) {
 
 <!DOCTYPE html>
 
-<!--[if lt IE 8 ]><html dir="ltr" lang="fr" class="ie lt8 lt9"><![endif]-->
-<!--[if IE 8 ]><html dir="ltr" lang="fr" class="ie ie8 lt9"><![endif]-->
-<!--[if IE 9 ]><html dir="ltr" lang="fr" class="ie ie9"><![endif]-->
+<!--[if lt IE 8]><html dir="ltr" lang="fr" class="ie lt8 lt9"><![endif]-->
+<!--[if IE 8]><html dir="ltr" lang="fr" class="ie ie8 lt9"><![endif]-->
+<!--[if IE 9]><html dir="ltr" lang="fr" class="ie ie9"><![endif]-->
 <!--[if (gt IE 9)|!(IE)]><!--><html dir="ltr" lang="fr"><!--<![endif]-->
 
 	<head>
@@ -402,13 +409,10 @@ if (canAccess('settings')) {
 		<link rel="shortcut icon" href="<?php echo Url::parse('favicon.ico'); ?>" />
 		<link rel="apple-touch-icon" href="<?php echo Url::parse('apple-touch-icon.png'); ?>" />
 
-		<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,900" />
 		<link rel="stylesheet" href="<?php echo Url::parse('public/css/app.min.css'); ?>" />
-		<link rel="stylesheet" href="<?php echo Url::parse('public/css/highlighter.css'); ?>" />
 
-		<!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
 		<!--[if lt IE 9]>
-			<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+			<script src="<?php echo Url::parse('public/js/html5.js'); ?>"></script>
 			<script src="<?php echo Url::parse('public/js/respond.js'); ?>"></script>
 		<![endif]-->
 
@@ -417,13 +421,16 @@ if (canAccess('settings')) {
 	<body>
 
 		<?php echo $page->getAlerts(); ?>
+		<!--[if lt IE 8]>
+			<div class="alert alert-error"><?php echo Trad::A_IE; ?></div>
+		<![endif]-->
 
 		<header>
 			<div class="header-inner">
-				<a href="javascript:;" class="a-display-right">
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
+				<a href="javascript:;" class="a-menu">
+					<span class="bar"></span>
+					<span class="bar"></span>
+					<span class="bar"></span>
 				</a>
 				<span class="brand"><?php
 					echo '<a href="'.Url::parse('home').'">'.$config['title'].'</a>';
@@ -431,17 +438,13 @@ if (canAccess('settings')) {
 						echo '<span class="slash">/</span><a class="a-project" href="'.Url::parse(getProject().'/dashboard').'">'.getProject().'</a>';
 					}
 				?></span>
-				<div class="nav-bar">
-					<ul>
-						<?php echo $menu; ?>
-					</ul>
-				</div>
 			</div>
 		</header>
 
 		<div class="main">
 
-			<aside class="main-right in">
+			<aside class="main-right">
+				<div class="main-right-open div-affix">Menu</div>
 				<div class="main-right-inner div-affix">
 					<nav>
 						<ul>
@@ -504,11 +507,7 @@ if (canAccess('settings')) {
 			</aside>
 
 			<section class="main-left">
-				<div class="div-hover"></div>
-
 				<?php echo $page->getContent(); ?>
-
-				<div class="spacer"></div>
 			</section>
 
 		</div>
