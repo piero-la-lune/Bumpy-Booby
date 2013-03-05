@@ -8,7 +8,7 @@ spl_autoload_register('loadClass');
 set_error_handler(array('Text', 'capture_error'));
 
 define('NAME', 'Bumpy Booby');
-define('VERSION', '0.1');
+define('VERSION', '0.2');
 define('AUTHOR', 'Pierre Monchalin');
 define('URL', 'http://bumpy-booby.derivoile.fr');
 
