@@ -17,7 +17,7 @@ Features :
 - protection against too many failed login attempts
 - url rewriting
 - email notifications
-- various languages supported (*fr* and *en* for now)
+- various languages supported (_fr_ and _en_ for now)
 - …
 
 ## Installation
@@ -27,7 +27,7 @@ Copy all files, run `./` or `./index.php`, configure Bumpy Booby and enjoy !
 ## Backup
 
 Before any update, it's highly recommended to make a backup. You only need to
-save folder "./database".
+save folder `./database`.
 
 ## Requirements
 
