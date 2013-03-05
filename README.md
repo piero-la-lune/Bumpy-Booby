@@ -3,7 +3,7 @@
 Bumpy Booby is a simple, responsive and highly customizable PHP bug tracking
 system.
 
-![Bumpy Booby logo](http://uploads.derivoile.fr/public/img/bumpy-booby.png)
+![Bumpy Booby logo](http://uploads.derivoile.fr/bumpy-booby.png)
 
 Features :
 
@@ -22,7 +22,7 @@ Features :
 
 ## Installation
 
-Copy all files, run './' or './index.php', configure Bumpy Booby and enjoy !
+Copy all files, run `./` or `./index.php`, configure Bumpy Booby and enjoy !
 
 ## Backup
 
