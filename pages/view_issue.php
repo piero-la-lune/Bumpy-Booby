@@ -151,7 +151,7 @@ foreach ($issue['edits'] as $k => $e) {
 			Trad::S_ISSUE_UPDATED).'
 	</div>
 	<div class="inner t-display" style="display:'.$displ_c.'">
-		'.Text::markdown($e['text']).'
+		<div class="text-container">'.Text::markdown($e['text']).'</div>
 		'.$uploads.'
 	</div>
 	'.$edit_comment.'
