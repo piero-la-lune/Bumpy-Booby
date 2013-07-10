@@ -560,7 +560,7 @@ if (canAccess('settings')) {
 				$(".m_<?php echo $page->getSafePage(); ?>").addClass("active");
 			});
 		</script>
-		<script src="<?php echo Url::parse('public/js/scripts.js'); ?>"></script>
+		<script src="<?php echo Url::parse('public/js/scripts.min.js'); ?>"></script>
 		<script>
 			<?php echo $page->getJavascript(); ?>
 		</script>
