@@ -516,9 +516,9 @@ class Issues {
 		else { $by = NULL; }
 
 		$uploads = array();
-		if (canAccess('upload') && !empty($post['comment_uploads'])) {
+		if (canAccess('upload') && !empty($post['uploads'])) {
 			$uploader = Uploader::getInstance();
-			$u = explode(',', $post['comment_uploads']);
+			$u = explode(',', $post['uploads']);
 			foreach ($u as $v) {
 				if ($uploader->get($v)) {
 					$uploads[] = $v;
