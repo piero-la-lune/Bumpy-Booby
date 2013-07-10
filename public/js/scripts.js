@@ -12,7 +12,7 @@ function highlighter(e, f) {
 		var html = "<table><td class=\"td-nb\">";
 		for (var i = 1; i < nb+1; i++) {
 			html += "<span unselectable=\"on\">"+i+"</span>\n";
-		};
+		}
 		e.html(html+"</td><td class=\"td-code\">"+text+"</td></tr></table>");
 	}
 }
@@ -55,8 +55,8 @@ function update_position(scrollto) {
 			var pie = $(this);
 			if (!pie.get(0).getContext) { return true; }
 			var ctx = pie.get(0).getContext("2d"),
-				pie_width = parseInt(pie.attr("width")),
-				pie_height = parseInt(pie.attr("height")),
+				pie_width = parseInt(pie.attr("width"), 10),
+				pie_height = parseInt(pie.attr("height"), 10),
 				pie_radius = pie_height/2-12,
 				pie_radius2 = pie_radius/2,
 				pie_hover = false,
@@ -66,8 +66,8 @@ function update_position(scrollto) {
 				var y = Math.floor((e.pageY-pie.offset().top));
 				var fromCenterX = x-pie_width/2;
 				var fromCenterY = y-pie_height/2;
-				var fromCenter = Math.sqrt(Math.pow(Math.abs(fromCenterX), 2)
-					+ Math.pow(Math.abs(fromCenterY), 2));
+				var fromCenter = Math.sqrt(Math.pow(Math.abs(fromCenterX), 2) +
+					Math.pow(Math.abs(fromCenterY), 2));
 				if (fromCenter <= pie_radius && fromCenter >= pie_radius2-12) {
 					var angle = Math.atan2(fromCenterY, fromCenterX);
 					if (angle < 0) angle = 2 * Math.PI + angle; // normalize
@@ -172,7 +172,7 @@ $(document).ready(function(){
 	$(".a-help-markdown").click(function() {
 		$(this).closest(".box").find(".div-help-markdown").toggle();
 	});
-	
+
 	$(".alert").click(function() { $(this).slideUp(); });
 
 	$(".main-right-open").click(function() {
@@ -197,7 +197,7 @@ $(document).ready(function(){
 				text: form.find("textarea").val()
 			}
 		}).done(function(ans) {
-			var ans = jQuery.parseJSON(ans);
+			ans = jQuery.parseJSON(ans);
 			if (ans.success) {
 				form
 					.find("textarea").hide().end()
@@ -244,7 +244,7 @@ $(document).ready(function(){
 	$(".box-sort-filter form").submit(function(){
 		var sel = $(this).find("select"),
 			val = "",
-			arr = new Array();
+			arr = [];
 		if (sel.eq(0).val() == "id") { val = "id_"; }
 		else { val = "mod_"; }
 		if (sel.eq(1).val() == "desc") { val = val+"desc"; }
@@ -399,7 +399,7 @@ $(document).ready(function(){
 					name: div.data("name")
 				}
 			}).done(function(ans) {
-				var ans = jQuery.parseJSON(ans);
+				ans = jQuery.parseJSON(ans);
 				if (ans.success) {
 					div.remove();
 				}
@@ -407,7 +407,7 @@ $(document).ready(function(){
 					alert(ans.text);
 				}
 				token = ans.token;
-			});	
+			});
 		});
 		$(form.data("link")).submit(function() {
 			var uploads = "";
@@ -431,7 +431,7 @@ $(document).ready(function(){
 				user: p.data("user")
 			}
 		}).done(function(ans) {
-			var ans = jQuery.parseJSON(ans);
+			ans = jQuery.parseJSON(ans);
 			if (ans.success) {
 				p.remove();
 				progress.find("span").html(ans.space);
