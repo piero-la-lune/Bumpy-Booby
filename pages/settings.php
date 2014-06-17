@@ -2,6 +2,20 @@
 
 $title = Trad::T_SETTINGS;
 
+if (isset($_GET['action']) && $_GET['action'] = 'export' && getProject()) {
+	header('Content-Type: text/plain');
+	$folder = str_replace('%name%', getProject(), FOLDER_PROJECT);
+	$issues = Text::unhash(get_file($folder.FILE_ISSUES));
+	echo json_encode($issues);
+	exit;
+}
+if (isset($_GET['action']) && $_GET['action'] = 'export_users') {
+	header('Content-Type: text/plain');
+	$users = Text::unhash(get_file(FILE_USERS));
+	echo json_encode($users);
+	exit;
+}
+
 if (isset($_POST['action']) && isset($_POST['token'])) {
 	if (!tokenOk($_POST['token'])) {
 		$this->addAlert(Trad::A_ERROR_TOKEN);
@@ -47,6 +61,11 @@ function getTrProject($v, $d) {
 					.'<i class="icon-chevron-down"></i>'
 				.'</a>'
 			.'</div>'
+			.'<a href="'
+				.Url::parse('settings', array('action' => 'export', 'project' => $v))
+				.'" class="btn btn-export">'
+				.'<i class="icon-share"></i>'
+			.'</a>'
 			.'<a href="javascript:;" class="btn a-remove-project">'
 				.'<i class="icon-trash"></i>'
 			.'</a>'
@@ -591,7 +610,7 @@ $content = '
 					'.$t_users.'
 				</tbody>
 			</table>
-			<p style="text-align:center"><a href="javascript:;" class="btn btn-success btn-add-user">'.Trad::F_ADD_USER.'</a></p>
+			<p style="text-align:center"><a href="javascript:;" class="btn btn-success btn-add-user">'.Trad::F_ADD_USER.'</a><a href="'.Url::parse('settings', array('action' => 'export_users')).'" class="btn btn-export-users"><i class="icon-share"></i></a></p>
 		</div>
 	</div>
 

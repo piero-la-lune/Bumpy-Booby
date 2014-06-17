@@ -84,6 +84,7 @@ class Trad {
 	const V_REMOVE_ISSUE = 'Delete issue';
 	const V_CLOSE = 'close';
 	const V_REOPEN = 'reopen';
+	const V_EXPORT = 'Export raw data';
 
 		# Sentencies
 

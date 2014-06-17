@@ -84,6 +84,7 @@ class Trad {
 	const V_REMOVE_ISSUE = 'Supprimer la demande';
 	const V_CLOSE = 'fermer';
 	const V_REOPEN = 'réouvrir';
+	const V_EXPORT = 'Exporter les données brutes';
 
 		# Phrases
 
