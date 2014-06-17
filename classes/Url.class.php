@@ -94,7 +94,6 @@ class Url {
 		return self::parse($this->page);
 	}
 	public static function getRules() {
-		if (!canAccess('settings')) { return false; }
 		return self::$rewriting;
 	}
 
