@@ -31,7 +31,7 @@ spl_autoload_register('loadClass');
 set_error_handler(array('Text', 'capture_error'));
 
 define('NAME', 'Bumpy Booby');
-define('VERSION', '0.2');
+define('VERSION', '0.2.1');
 define('AUTHOR', 'Pierre Monchalin');
 define('URL', 'http://bumpy-booby.derivoile.fr');
 
@@ -364,6 +364,10 @@ else {
 		require dirname(__FILE__).'/pages/ajax.php';
 		exit;
 	}
+	if ($_GET['page'] == 'rss') {
+		require dirname(__FILE__).'/pages/rss.php';
+		exit;
+	}
 	elseif ($_GET['page'] == 'identicons') {
 		require dirname(__FILE__).'/pages/identicons.php';
 		exit;
@@ -530,6 +534,11 @@ if (canAccess('settings')) {
 					?>
 					<div class="div-copyright">
 						<?php
+							if (getProject()) {
+								echo '<a href="'.Url::parse(getProject().'/rss').'">'
+									.Trad::W_RSS
+									.'</a><br />';
+							}
 							echo str_replace(
 								'%name%',
 								'<a href="'.URL.'">'.NAME.' '.VERSION.'</a>',

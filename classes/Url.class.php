@@ -56,6 +56,10 @@ class Url {
 			'redirect' => 'index.php?project=$1&page=new_issue'
 		),
 		array(
+			'rule' => '^([a-zA-Z0-9-]+)/rss$',
+			'redirect' => 'index.php?project=$1&page=rss'
+		),
+		array(
 			'rule' => '^users/([0-9]+)$',
 			'redirect' => 'index.php?page=view_user&id=$1'
 		),

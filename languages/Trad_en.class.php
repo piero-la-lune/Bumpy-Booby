@@ -62,6 +62,8 @@ class Trad {
 	const W_L_IMPROVEMENT = 'Improvement';
 	const W_L_PRIVATE = 'Private';
 
+	const W_RSS = 'RSS feed';
+
 		# Verbes
 
 	const V_UPDATE = 'Update';
@@ -107,6 +109,9 @@ class Trad {
 	const S_ISSUE_UPDATED = '%adj% by %user% %time%.';
 	const S_ISSUE_STATUS_UPDATED = 'Status updated to %status% by %user% %time%.';
 
+	const S_RSS_ISSUE_UPDATED = '%adj% by %user%.';
+	const S_RSS_ISSUE_STATUS_UPDATED = 'Status updated to “%status%” by %user%.';
+
 	const S_INTRO_INSTALL = 'It looks like it\'s the first time you run Bumpy Booby! Please configure it:';
 	const S_FIRST_ISSUE_TITLE = 'How are you doing, pumpkin?';
 	const S_FIRST_ISSUE = 'I am your first issue! After logging, you will be able to delete me.';
@@ -121,6 +126,8 @@ class Trad {
 
 	const S_SEARCH = '#12, @user, words…';
 	const S_COPYRIGHT = 'Powered by %name%.';
+
+	const S_LAST_UPDATES = 'Last updates…';
 
 		# Alerts
 

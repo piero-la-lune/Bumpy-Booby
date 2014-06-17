@@ -62,6 +62,8 @@ class Trad {
 	const W_L_IMPROVEMENT = 'Amélioration';
 	const W_L_PRIVATE = 'Privé';
 
+	const W_RSS = 'Flux RSS';
+
 		# Verbes
 
 	const V_UPDATE = 'Mettre à jour';
@@ -107,6 +109,9 @@ class Trad {
 	const S_ISSUE_UPDATED = '%adj% par %user% %time%.';
 	const S_ISSUE_STATUS_UPDATED = 'Statut changé à %status% par %user% %time%.';
 
+	const S_RSS_ISSUE_UPDATED = '%adj% par %user%.';
+	const S_RSS_ISSUE_STATUS_UPDATED = 'Statut changé à « %status% » par %user%.';
+
 	const S_INTRO_INSTALL = 'On dirait que c\'est la première fois que vous utilisez Bumpy Booby ! Merci de le configurer :';
 	const S_FIRST_ISSUE_TITLE = 'Ça roule ma poule ?';
 	const S_FIRST_ISSUE = 'Je suis votre toute première demande ! Après vous être connecté, vous pourrez me supprimer.';
@@ -121,6 +126,8 @@ class Trad {
 
 	const S_SEARCH = '#12, @qqn, mots…';
 	const S_COPYRIGHT = 'Propulsé par %name%.';
+
+	const S_LAST_UPDATES = 'Dernières mises à jour…';
 
 		# Alerts
 

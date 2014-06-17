@@ -10,11 +10,8 @@ class Settings {
 		$this->config = $config;
 	}
 
-	protected function save() {
+	public function save() {
 		global $config;
-		if (is_file(DIR_DATABASE.FILE_CONFIG) && !canAccess('settings')) {
-			return false;
-		}
 		$sav = $this->config;
 		$sav['last_update'] = time();
 		$sav['version'] = VERSION;
@@ -72,21 +69,7 @@ class Settings {
 					$post['url_rewriting'],
 					FILTER_SANITIZE_URL
 				);
-				if ($rewriting = Url::getRules()) {
-					$base = $this->config['url_rewriting'];
-					$text = 'ErrorDocument 404 '.$base.'error/404'."\n\n"
-						.'RewriteEngine on'."\n"
-						.'RewriteBase '.$base."\n\n";
-					foreach ($rewriting as $r) {
-						if (isset($r['condition'])
-							&& $r['condition'] == 'file_doesnt_exist'
-						) {
-							$text .= "\n".'RewriteCond %{REQUEST_FILENAME} !-f'."\n";
-						}
-						$text .= 'RewriteRule '.$r['rule'].' '.$r['redirect'].' [QSA,L]'."\n";
-					}
-					file_put_contents('.htaccess', $text);
-				}
+				$this->url_rewriting();
 			}
 		}
 		if (isset($post['email'])) {
@@ -464,6 +447,24 @@ class Settings {
 		return true;
 	}
 
+	public function url_rewriting() {
+		if ($rewriting = Url::getRules()) {
+			$base = $this->config['url_rewriting'];
+			$text = 'ErrorDocument 404 '.$base.'error/404'."\n\n"
+				.'RewriteEngine on'."\n"
+				.'RewriteBase '.$base."\n\n";
+			foreach ($rewriting as $r) {
+				if (isset($r['condition'])
+					&& $r['condition'] == 'file_doesnt_exist'
+				) {
+					$text .= "\n".'RewriteCond %{REQUEST_FILENAME} !-f'."\n";
+				}
+				$text .= 'RewriteRule '.$r['rule'].' '.$r['redirect'].' [QSA,L]'."\n";
+			}
+			file_put_contents('.htaccess', $text);
+		}
+	}
+
 	public function update_user($id, $post) {
 		if (!isset($this->config['users'][$id])
 			|| !$this->config['loggedin']
@@ -601,6 +602,7 @@ class Settings {
 			'length_preview_project' => 200,
 			'nb_last_activity_dashboard' => 5,
 			'nb_last_activity_user' => 5,
+			'nb_last_activity_rss' => 20,
 			'logs_enabled' => false,
 			'projects' => array(
 				'default' => array(
