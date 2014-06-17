@@ -445,6 +445,17 @@ if (canAccess('settings')) {
 
 		<title><?php echo $page->getTitle(); ?> – <?php echo $config['title']; ?></title>
 
+		<?php
+
+			if (getProject()) {
+				echo '<link rel="alternate" type="application/rss+xml" href="'
+					.Url::parse(getProject().'/rss').'" title="'.Trad::W_RSS.'" />';
+			}
+
+		?>
+
+	</head>
+
 	<body>
 
 		<?php echo $page->getAlerts(); ?>
