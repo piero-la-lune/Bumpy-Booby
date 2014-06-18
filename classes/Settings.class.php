@@ -585,10 +585,22 @@ class Settings {
 		}
 	}
 
+	public static function get_path() {
+		$http = 'http://';
+		if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == "on") {
+			$http = 'https://';
+		}
+		$server = $_SERVER['SERVER_NAME'];
+		if ($_SERVER['SERVER_PORT'] != '80') {
+			$server .= ':'.$_SERVER['SERVER_PORT'];
+		}
+		return $http.$server.Text::dir($_SERVER['SCRIPT_NAME']);
+	}
+
 	public static function get_default_config($language = 'en') {
 		return array(
 			'title' => 'Bumpy Booby',
-			'url' => 'http://'.$_SERVER['SERVER_NAME'].Text::dir($_SERVER["SCRIPT_NAME"]),
+			'url' => Settings::get_path(),
 			'url_rewriting' => false,
 			'intro' => '',
 			'email' => false,
