@@ -1,4 +1,4 @@
-# Bumpy Booby 0.2
+# Bumpy Booby 0.3
 
 Bumpy Booby is a simple, responsive and highly customizable PHP bug tracking
 system.
@@ -18,6 +18,7 @@ Features:
 - url rewriting
 - email notifications
 - various languages supported ( _fr_ and _en_ for now)
+- RSS feeds
 - …
 
 To get more information or to see it in action:

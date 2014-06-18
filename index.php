@@ -1,7 +1,7 @@
 <?php
 
 # Bumpy Booby
-# Copyright (c) 2013 Pierre Monchalin
+# Copyright (c) 2013-2014 Pierre Monchalin
 # <http://bumpy-booby.derivoile.fr>
 # 
 # Permission is hereby granted, free of charge, to any person obtaining
