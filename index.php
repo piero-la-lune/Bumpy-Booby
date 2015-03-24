@@ -24,7 +24,7 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 ### Load classes
-function loadclass($classe) { require './classes/'.$classe.'.class.php'; }
+function loadclass($classe) { require './classes/'.str_replace('\\', '/', $classe).'.class.php'; }
 spl_autoload_register('loadClass');
 
 ### Catch errors
