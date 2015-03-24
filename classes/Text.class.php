@@ -177,6 +177,8 @@ class Text {
 		$text = self::beforeMarkdown($text);
 		$text = $markdown->transform($text);
 		$text = self::afterMarkdown($text);
+		$purifier = new HTMLPurifier();
+		$text = $purifier->purify($text);
 		return $text;
 	}
 
