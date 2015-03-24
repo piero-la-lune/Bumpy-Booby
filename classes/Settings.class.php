@@ -461,6 +461,7 @@ class Settings {
 				}
 				$text .= 'RewriteRule '.$r['rule'].' '.$r['redirect'].' [QSA,L]'."\n";
 			}
+			$text .= 'RewriteRule ^([a-zA-Z0-9-]+)/?$ $1/dashboard [R=301,L]';
 			file_put_contents('.htaccess', $text);
 		}
 	}
