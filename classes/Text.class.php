@@ -183,6 +183,9 @@ class Text {
 	}
 
 	protected static function beforeMarkdown($text) {
+		return $text;
+	}
+	protected static function afterMarkdown($text) {
 		if (getProject()) {
 			$text = preg_replace_callback(
 				'/(^|\s)#([0-9]+)(\s|$)/',
@@ -190,10 +193,10 @@ class Text {
 					$issues = Issues::getInstance(getProject());
 					if ($issues->get($m[2])) {
 						return $m[1]
-							.'[#'.$m[2].']'
-							.'('.Url::parse(getProject().'/issues/'.$m[2]).' '
-							.'"a-issue")'
-						.$m[3];
+							.'<a href="'.Url::parse(getProject().'/issues/'.$m[2]).'">'
+							.'#'.$m[2]
+							.'</a>'
+							.$m[3];
 					}
 					return $m[0];
 				},
@@ -210,10 +213,10 @@ class Text {
 					$issues = Issues::getInstance($m[2]);
 					if ($issues->get($m[3])) {
 						return $m[1]
-							.'['.$m[2].'#'.$m[3].']'
-							.'('.Url::parse($m[2].'/issues/'.$m[3]).' '
-							.'"a-issue")'
-						.$m[4];
+							.'<a href="'.Url::parse($m[2].'/issues/'.$m[3]).'">'
+							.$m[2].'#'.$m[3]
+							.'</a>'
+							.$m[4];
 					}
 				}
 				return $m[0];
@@ -227,9 +230,10 @@ class Text {
 				foreach ($config['users'] as $u) {
 					if ($u['username'] == $m[2]) {
 						return $m[1]
-							.'[@'.$m[2].']'
-							.'('.Url::parse('users/'.$u['id']).')'
-						.$m[3];
+							.'<a href="'.Url::parse('users/'.$u['id']).'">'
+							.'@'.$m[2]
+							.'</a>'
+							.$m[3];
 					}
 				}
 				return $m[0];
@@ -243,24 +247,13 @@ class Text {
 				foreach ($config['users'] as $u) {
 					if ($u['username'] == $m[2]) {
 						return $m[1]
-							.'[@'.$m[2].']'
-							.'('.Url::parse('users/'.$u['id']).')'
-						.$m[3];
+							.'<a href="'.Url::parse('users/'.$u['id']).'">'
+							.'@'.$m[2]
+							.'</a>'
+							.$m[3];
 					}
 				}
 				return $m[0];
-			},
-			$text
-		);
-		return $text;
-	}
-	protected static function afterMarkdown($text) {
-		$text = preg_replace_callback(
-			'@<a href="(.*)" title="a-issue">(.*)</a>@U',
-			function($m) {
-				return '<a href="'.$m[1].'" class="a-issue">'
-					.str_replace('#', '<span>#</span>', $m[2])
-				.'</a>';
 			},
 			$text
 		);
