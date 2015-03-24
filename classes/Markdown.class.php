@@ -9,6 +9,13 @@ class Markdown extends Michelf\Markdown {
 		'css', 'xml', 'http', 'java', 'php', 'python', 'sql', 'ini', 'perl',
 		'json', 'cpp', 'markdown', 'no-highlight');
 
+	# Adds strike with ~~ (basic)
+	protected function doItalicsAndBold($text) {
+		$text = parent::doItalicsAndBold($text);
+		$text = preg_replace('/~~([^~]+)~~/s', '<del>$1</del>', $text);
+		return $text;
+	}
+
 	# Adds code blocks with ```
 	protected function doCodeBlocks($text) {
 		$text = parent::doCodeBlocks($text);
