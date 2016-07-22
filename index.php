@@ -422,10 +422,10 @@ if (canAccess('settings')) {
 
 <!DOCTYPE html>
 
-<!--[if lt IE 8]><html dir="ltr" lang="fr" class="ie lt8 lt9"><![endif]-->
-<!--[if IE 8]><html dir="ltr" lang="fr" class="ie ie8 lt9"><![endif]-->
-<!--[if IE 9]><html dir="ltr" lang="fr" class="ie ie9"><![endif]-->
-<!--[if (gt IE 9)|!(IE)]><!--><html dir="ltr" lang="fr"><!--<![endif]-->
+<!--[if lt IE 8]><html dir="ltr" lang="<?php echo $config['language']; ?>" class="ie lt8 lt9"><![endif]-->
+<!--[if IE 8]><html dir="ltr" lang="<?php echo $config['language']; ?>" class="ie ie8 lt9"><![endif]-->
+<!--[if IE 9]><html dir="ltr" lang="<?php echo $config['language']; ?>" class="ie ie9"><![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!--><html dir="ltr" lang="<?php echo $config['language']; ?>"><!--<![endif]-->
 
 	<head>
 
@@ -458,7 +458,7 @@ if (canAccess('settings')) {
 
 	<body>
 
-		<?php echo $page->getAlerts(); ?>
+		<?php echo $page->getAlerts(); var_DUMP($config['language']); ?>
 		<!--[if lt IE 8]>
 			<div class="alert alert-error"><?php echo Trad::A_IE; ?></div>
 		<![endif]-->
