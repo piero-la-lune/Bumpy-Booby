@@ -62,7 +62,7 @@ class Trad {
 	const W_L_IMPROVEMENT = 'Amélioration';
 	const W_L_PRIVATE = 'Privé';
 
-	const W_PROFILEPIC = 'profile picture'; // je ne parle pas français
+	const W_PROFILEPIC = 'avatar';
 
 	const W_RSS = 'Flux RSS';
 

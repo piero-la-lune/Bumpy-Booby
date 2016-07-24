@@ -136,7 +136,7 @@ foreach ($issue['edits'] as $k => $e) {
 		}
 		$edits .= '
 <div class="box-identicon">
-	<img src="'.Text::identicon(Text::username($e['by'])).'" alt="'.Text::username($e['by']).' '.Trad::W_PROFILEPIC.'" />
+	<img src="'.Text::identicon(Text::username($e['by'])).'" alt="'.htmlspecialchars(Text::username($e['by'])).' '.Trad::W_PROFILEPIC.'" />
 </div>
 <div class="box box-comment" id="'.$id.'">
 	<div class="top">
