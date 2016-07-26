@@ -62,6 +62,8 @@ class Trad {
 	const W_L_IMPROVEMENT = 'Improvement';
 	const W_L_PRIVATE = 'Private';
 
+	const W_PROFILEPIC = 'profile picture';
+
 	const W_RSS = 'RSS feed';
 
 		# Verbes

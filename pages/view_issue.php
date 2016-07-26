@@ -136,7 +136,7 @@ foreach ($issue['edits'] as $k => $e) {
 		}
 		$edits .= '
 <div class="box-identicon">
-	<img src="'.Text::identicon(Text::username($e['by'])).'" />
+	<img src="'.Text::identicon(Text::username($e['by'])).'" alt="'.htmlspecialchars(Text::username($e['by'])).' '.Trad::W_PROFILEPIC.'" />
 </div>
 <div class="box box-comment" id="'.$id.'">
 	<div class="top">
@@ -190,7 +190,7 @@ if (canAccess('post_comment') && $issue['open']) {
 			<div class="preview text-container" style="display:none"></div>
 			'.$message.'
 			<div class="form-actions">
-				<button type="button" class="btn btn-preview">'.Trad::V_PREVIEW.'</a>
+				<button type="button" class="btn btn-preview">'.Trad::V_PREVIEW.'</button>
 				<button type="submit" class="btn btn-primary">'.Trad::V_COMMENT.'</button>
 			</div>
 			<input type="hidden" name="uploads" value="" />
