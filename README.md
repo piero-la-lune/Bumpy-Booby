@@ -7,17 +7,17 @@ system.
 
 Features:
 
-- **no database required**
-- statuses and tags highly customizable
-- file attachements
-- syntax highlighting for code blocks
-- permissions & groups highly customizable
-- multiple projects management
-- easy backup (one folder)
-- protection against too many failed login attempts
-- url rewriting
-- email notifications
-- various languages supported ( _fr_ and _en_ for now)
+- **No database required**
+- Statuses and tags highly customizable
+- File attachments
+- Syntax highlighting for code blocks
+- Permissions & groups highly customizable
+- Multiple projects management
+- Easy backup (one folder)
+- Protection against too many failed login attempts
+- URL rewriting
+- E-mail notifications
+- Various languages supported ( _fr_ and _en_ for now)
 - RSS feeds
 - …
 
@@ -30,12 +30,12 @@ To get more information or to see it in action:
 
 Copy all files, run `./` or `./index.php`, configure Bumpy Booby and enjoy !
 
-Note : you can delete folder "./public/css/app/", it is useless.
+Note : you can delete the `./public/css/app/` folder, it is useless.
 
 ### Backup
 
 Before any update, it's highly recommended to make a backup. You only need to
-save folder `./database/`.
+save the `./database/` folder.
 
 ### Requirements
 
